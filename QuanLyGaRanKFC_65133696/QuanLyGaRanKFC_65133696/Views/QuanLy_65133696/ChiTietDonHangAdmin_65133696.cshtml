@@ -1,0 +1,110 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Chi_Tiet_Don_Hang>
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+
+    // Lấy thông tin đơn hàng từ ViewBag
+    var dh = ViewBag.DonHang as Don_Hang;
+    var khachHang = dh.Tai_Khoan;
+}
+
+<div class="container-fluid">
+    <div class="mb-3">
+        <a href="@Url.Action("QuanLyDonHang_65133696", "QuanLy_65133696")" class="text-decoration-none text-muted">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0 fw-bold text-uppercase">
+                <i class="fa-solid fa-file-invoice"></i> Đơn hàng #@dh.MaDH
+            </h5>
+            <span class="badge bg-light text-danger fs-6">@dh.TrangThai</span>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row mb-4">
+                <div class="col-md-6 border-end">
+                    <h6 class="text-danger fw-bold mb-3"><i class="fa-solid fa-user"></i> THÔNG TIN KHÁCH HÀNG</h6>
+                    <p class="mb-1"><strong>Họ tên:</strong> @(khachHang != null ? khachHang.HoTen : "Khách vãng lai")</p>
+                    <p class="mb-1"><strong>Email:</strong> @(khachHang != null ? khachHang.Email : "---")</p>
+                    <p class="mb-1"><strong>SĐT Đăng ký:</strong> @(khachHang != null ? khachHang.SoDT : "---")</p>
+                </div>
+                <div class="col-md-6 ps-md-4">
+                    <h6 class="text-danger fw-bold mb-3"><i class="fa-solid fa-truck"></i> THÔNG TIN GIAO HÀNG</h6>
+                    <p class="mb-1"><strong>Ngày đặt:</strong> @string.Format("{0:dd/MM/yyyy HH:mm}", dh.NgayDat)</p>
+                    <p class="mb-1"><strong>Địa chỉ nhận:</strong> @dh.DiaChiGiao</p>
+                    <div class="alert alert-warning mt-2 mb-0 p-2 small">
+                        <i class="fa-solid fa-note-sticky"></i> <strong>Ghi chú:</strong> @(string.IsNullOrEmpty(dh.GhiChu) ? "Không có ghi chú" : dh.GhiChu)
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="bg-light text-center">
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th>Tên món ăn</th>
+                            <th>Hình ảnh</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@(i++)</td>
+                                <td>
+                                    <span class="fw-bold">@item.Mon_An.TenMon</span><br />
+                                    <small class="text-muted">Mã: @item.MaMon</small>
+                                </td>
+                                <td class="text-center">
+                                    <img src="@Url.Content(item.Mon_An.HinhAnh)" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+                                         onerror="this.src='https://via.placeholder.com/50'" />
+                                </td>
+                                <td class="text-end">@string.Format("{0:N0} đ", item.DonGia)</td>
+                                <td class="text-center fw-bold">x @item.SoLuong</td>
+                                <td class="text-end fw-bold text-danger">@string.Format("{0:N0} đ", item.DonGia * item.SoLuong)</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-end fs-5 fw-bold">TỔNG CỘNG:</td>
+                            <td class="text-end fs-4 fw-bold text-danger">@string.Format("{0:N0} đ", dh.TongTien)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white p-3 text-end">
+            @if (dh.TrangThai == "ChoXacNhan")
+            {
+                <a href="@Url.Action("DuyetDon_65133696", "QuanLy_65133696", new { id = dh.MaDH })" class="btn btn-success me-2">
+                    <i class="fa-solid fa-check"></i> Duyệt Đơn
+                </a>
+                <a href="@Url.Action("HuyDon_65133696", "QuanLy_65133696", new { id = dh.MaDH })" class="btn btn-danger" onclick="return confirm('Hủy đơn này?')">
+                    <i class="fa-solid fa-xmark"></i> Hủy Đơn
+                </a>
+            }
+            else if (dh.TrangThai == "DangGiao")
+            {
+                <a href="@Url.Action("HoanThanhDon_65133696", "QuanLy_65133696", new { id = dh.MaDH })" class="btn btn-warning fw-bold">
+                    <i class="fa-solid fa-box-open"></i> Xác Nhận Đã Giao
+                </a>
+            }
+
+            <button onclick="window.print()" class="btn btn-dark ms-2">
+                <i class="fa-solid fa-print"></i> In Hóa Đơn
+            </button>
+        </div>
+    </div>
+</div>

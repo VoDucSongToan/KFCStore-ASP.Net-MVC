@@ -1,0 +1,246 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model Tai_Khoan
+
+@{
+    ViewBag.Title = "Hồ Sơ Cá Nhân";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+
+    var listDonHang = ViewBag.ListDonHang as List<Don_Hang>;
+    var listPhanHoi = ViewBag.ListPhanHoi as List<LienHe>;
+}
+
+<style>
+    body { background-color: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
+    .profile-container { max-width: 1200px; margin: 40px auto; display: flex; gap: 30px; padding: 0 15px; }
+    .profile-sidebar { flex: 1; min-width: 280px; }
+    .user-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; padding: 30px 20px; }
+    .user-avatar { width: 100px; height: 100px; background: #eee; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #aaa; border: 3px solid #E4002B; }
+    .user-name { font-weight: 800; font-size: 18px; margin-bottom: 5px; }
+    .user-role { font-size: 13px; color: #777; background: #f0f0f0; padding: 4px 10px; border-radius: 20px; display: inline-block; }
+    .side-menu { margin-top: 30px; text-align: left; }
+    .menu-item { display: block; padding: 12px 20px; margin-bottom: 5px; color: #555; text-decoration: none; font-weight: 600; border-radius: 8px; transition: 0.3s; cursor: pointer; }
+    .menu-item:hover { background: #ffebeb; color: #E4002B; }
+    .menu-item.active { background: #E4002B; color: white; box-shadow: 0 4px 10px rgba(228, 0, 43, 0.3); }
+    .menu-item i { width: 25px; text-align: center; margin-right: 10px; }
+    .profile-content { flex: 3; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); min-height: 500px; }
+    .tab-section { display: none; animation: fadeIn 0.3s ease; }
+    .tab-section.active { display: block; }
+    .section-title { font-weight: 800; color: #E4002B; font-size: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; margin-bottom: 20px; }
+    .custom-table { width: 100%; border-collapse: collapse; }
+    .custom-table th { background: #f8f9fa; padding: 12px; text-align: left; font-weight: 700; color: #444; border-bottom: 2px solid #ddd; }
+    .custom-table td { padding: 12px; border-bottom: 1px solid #eee; color: #555; font-size: 14px; }
+    .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+
+     
+    .input-group { position: relative; display: flex; flex-wrap: wrap; align-items: stretch; width: 100%; }
+    .input-group .form-control { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+    .input-group-append .btn { border-top-left-radius: 0; border-bottom-left-radius: 0; border: 1px solid #ced4da; border-left: 0; }
+</style>
+
+<div class="profile-container">
+    <div class="profile-sidebar">
+        <div class="user-card">
+            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="user-name">@Model.HoTen</div> <div class="user-role">Thành viên thân thiết</div>
+            <div class="side-menu">
+                <div class="menu-item active" onclick="switchTab('tabInfo', this)"><i class="fa-solid fa-id-card"></i> Thông tin tài khoản</div>
+                <div class="menu-item" onclick="switchTab('tabOrder', this)"><i class="fa-solid fa-box-open"></i> Lịch sử đơn hàng</div>
+                <div class="menu-item" onclick="switchTab('tabFeedback', this)"><i class="fa-solid fa-comments"></i> Lịch sử phản hồi</div>
+                <div class="menu-item" onclick="switchTab('tabPassword', this)"><i class="fa-solid fa-key"></i> Đổi mật khẩu</div>
+                <a href="@Url.Action("DangXuat_65133696", "KhachHang_65133696")" class="menu-item" style="color:#dc3545;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div id="tabInfo" class="tab-section active">
+            <h3 class="section-title">Thông Tin Cá Nhân</h3>
+            @if (TempData["ThongBao"] != null)
+            {<div class="alert alert-success">@TempData["ThongBao"]</div>}
+            <form action="@Url.Action("CapNhatThongTin_65133696", "KhachHang_65133696")" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Họ tên:</label>
+                        <input type="text" name="hoTen" class="form-control" value="@Model.HoTen" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Email (Cố định):</label>
+                        <input type="text" class="form-control bg-light" value="@Model.Email" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Số điện thoại:</label>
+                        <input type="text" name="soDienThoai" class="form-control" value="@Model.SoDT" required>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="fw-bold">Địa chỉ giao hàng:</label>
+                        <textarea name="diaChi" class="form-control" rows="2" required>@Model.DiaChi</textarea>
+                    </div>
+                    <div class="col-md-12 mt-3 text-center">
+                        <button type="submit" class="btn btn-dark rounded-pill px-4"><i class="fa-solid fa-save"></i> Cập nhật thông tin</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="tabOrder" class="tab-section">
+            <h3 class="section-title">Đơn Hàng Gần Đây</h3>
+            @if (listDonHang != null && listDonHang.Any())
+            {
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Mã ĐH</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dh in listDonHang)
+                        {
+                            string badgeClass = "bg-secondary";
+                            string statusText = dh.TrangThai;
+
+                            if (dh.TrangThai == "ChoXacNhan") { badgeClass = "bg-warning text-dark"; statusText = "Chờ xác nhận"; }
+                            else if (dh.TrangThai == "DangGiao") { badgeClass = "bg-primary"; statusText = "Đang giao hàng"; }
+                            else if (dh.TrangThai == "HoanThanh") { badgeClass = "bg-success"; statusText = "Hoàn thành"; }
+                            else if (dh.TrangThai == "Huy") { badgeClass = "bg-danger"; statusText = "Đã hủy"; }
+
+                            <tr>
+                                <td>#@dh.MaDH</td>
+                                <td>@string.Format("{0:dd/MM/yyyy}", dh.NgayDat)</td>
+                                <td style="color:#E4002B; font-weight:bold;">@string.Format("{0:0,0}", dh.TongTien) đ</td>
+                                <td><span class="badge @badgeClass rounded-pill px-3 py-2">@statusText</span></td>
+                                <td>
+                                    <a href="@Url.Action("ChiTietDonHang_65133696", "KhachHang_65133696", new { id = dh.MaDH })" class="text-danger fw-bold text-decoration-none">
+                                        <i class="fa-regular fa-eye"></i> Xem
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            { <p class="text-center text-muted mt-5">Bạn chưa có đơn hàng nào.</p>}
+        </div>
+
+        <div id="tabFeedback" class="tab-section">
+            <h3 class="section-title">Lịch Sử Hỗ Trợ</h3>
+            @if (listPhanHoi != null && listPhanHoi.Any())
+            {
+                foreach (var ph in listPhanHoi)
+                {
+                    <div class="border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@ph.TieuDe</strong>
+                            <small class="text-muted">@(ph.NgayGui.HasValue ? ph.NgayGui.Value.ToString("dd/MM/yyyy") : "")</small>
+                        </div>
+                        <p class="text-secondary small mb-2">@ph.NoiDung</p>
+                        @if (!string.IsNullOrEmpty(ph.PhanHoi))
+                        {
+                            <div class="bg-light p-2 rounded small text-dark border-start border-3 border-danger">
+                                <strong><i class="fa-solid fa-headset text-danger"></i> KFC Admin:</strong> @ph.PhanHoi
+                            </div>
+                        }
+                        else
+                        { <span class="badge bg-warning text-dark">Đang chờ xử lý</span>}
+                    </div>
+                }
+            }
+            else
+            { <p class="text-center text-muted mt-5">Chưa có phản hồi nào.</p>}
+        </div>
+
+        <div id="tabPassword" class="tab-section">
+            <h3 class="section-title">Đổi Mật Khẩu</h3>
+
+            @if (TempData["LoiDoiMatKhau"] != null)
+            {
+                <div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation"></i> @TempData["LoiDoiMatKhau"]</div>
+            }
+
+            <form action="@Url.Action("DoiMatKhau_65133696", "KhachHang_65133696")" method="post">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Mật khẩu hiện tại:</label>
+                            <div class="input-group">
+                                <input type="password" name="matKhauCu" id="oldPass" class="form-control" required placeholder="Nhập mật khẩu cũ">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePass('oldPass', this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Mật khẩu mới:</label>
+                            <div class="input-group">
+                                <input type="password" name="matKhauMoi" id="newPass" class="form-control" required placeholder="Nhập mật khẩu mới">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePass('newPass', this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Xác nhận mật khẩu mới:</label>
+                            <div class="input-group">
+                                <input type="password" name="xacNhanMatKhau" id="confirmPass" class="form-control" required placeholder="Nhập lại mật khẩu mới">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePass('confirmPass', this)">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-danger rounded-pill px-4" style="background:#E4002B; border:none;">
+                                <i class="fa-solid fa-key"></i> Xác nhận đổi mật khẩu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        if(element) element.classList.add('active');
+    }
+
+    // JS ẨN/HIỆN MẬT KHẨU
+    function togglePass(inputId, btn) {
+        var input = document.getElementById(inputId);
+        var icon = btn.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var openTab = '@TempData["OpenTab"]';
+        if (openTab === 'tabPassword') {
+            var menuItems = document.querySelectorAll('.menu-item');
+            switchTab('tabPassword', menuItems[3]);
+        }
+    });
+</script>

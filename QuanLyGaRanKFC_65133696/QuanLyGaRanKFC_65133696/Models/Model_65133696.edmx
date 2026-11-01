@@ -1,0 +1,1001 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="KFC_StoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Chi_Nhanh">
+          <Key>
+            <PropertyRef Name="MaCN" />
+          </Key>
+          <Property Name="MaCN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenCN" Type="nvarchar" MaxLength="150" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoDT" Type="nvarchar" MaxLength="50" />
+          <Property Name="GioMoCua" Type="nvarchar" MaxLength="50" />
+          <Property Name="LinkMap" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Chi_Tiet_Don_Hang">
+          <Key>
+            <PropertyRef Name="MaDH" />
+            <PropertyRef Name="MaMon" />
+          </Key>
+          <Property Name="MaDH" Type="int" Nullable="false" />
+          <Property Name="MaMon" Type="int" Nullable="false" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="DonGia" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Don_Hang">
+          <Key>
+            <PropertyRef Name="MaDH" />
+          </Key>
+          <Property Name="MaDH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTK" Type="int" />
+          <Property Name="NgayDat" Type="datetime" />
+          <Property Name="TongTien" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiaChiGiao" Type="nvarchar" MaxLength="255" />
+          <Property Name="GhiChu" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Giao_Hang">
+          <Key>
+            <PropertyRef Name="MaGH" />
+          </Key>
+          <Property Name="MaGH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaDH" Type="int" />
+          <Property Name="MaTK" Type="int" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
+          <Property Name="ThoiGianCapNhat" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Khuyen_Mai">
+          <Key>
+            <PropertyRef Name="MaKM" />
+          </Key>
+          <Property Name="MaKM" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenKM" Type="nvarchar" MaxLength="150" />
+          <Property Name="NoiDung" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhanTramGiam" Type="int" />
+          <Property Name="NgayBatDau" Type="date" />
+          <Property Name="NgayKetThuc" Type="date" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="LienHe">
+          <Key>
+            <PropertyRef Name="MaLH" />
+          </Key>
+          <Property Name="MaLH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTK" Type="int" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SoDienThoai" Type="varchar" MaxLength="20" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="200" />
+          <Property Name="NoiDung" Type="ntext" />
+          <Property Name="NgayGui" Type="datetime" />
+          <Property Name="TrangThai" Type="bit" />
+          <Property Name="PhanHoi" Type="ntext" />
+          <Property Name="NgayPhanHoi" Type="datetime" />
+          <Property Name="NguoiPhanHoi" Type="int" />
+        </EntityType>
+        <EntityType Name="Loai_Mon">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Mon_An">
+          <Key>
+            <PropertyRef Name="MaMon" />
+          </Key>
+          <Property Name="MaMon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaLoai" Type="int" />
+          <Property Name="TenMon" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="255" />
+          <Property Name="Gia" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="Mon_Khuyen_Mai">
+          <Key>
+            <PropertyRef Name="MaMon" />
+            <PropertyRef Name="MaKM" />
+          </Key>
+          <Property Name="MaMon" Type="int" Nullable="false" />
+          <Property Name="MaKM" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tai_Khoan">
+          <Key>
+            <PropertyRef Name="MaTK" />
+          </Key>
+          <Property Name="MaTK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="150" />
+          <Property Name="Email" Type="nvarchar" MaxLength="150" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="100" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoDT" Type="nvarchar" MaxLength="20" />
+          <Property Name="VaiTro" Type="nvarchar" MaxLength="50" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <Association Name="FK__Chi_Tiet___MaMon__4D94879B">
+          <End Role="Mon_An" Type="Self.Mon_An" Multiplicity="1" />
+          <End Role="Chi_Tiet_Don_Hang" Type="Self.Chi_Tiet_Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mon_An">
+              <PropertyRef Name="MaMon" />
+            </Principal>
+            <Dependent Role="Chi_Tiet_Don_Hang">
+              <PropertyRef Name="MaMon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Chi_Tiet_D__MaDH__4CA06362">
+          <End Role="Don_Hang" Type="Self.Don_Hang" Multiplicity="1" />
+          <End Role="Chi_Tiet_Don_Hang" Type="Self.Chi_Tiet_Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Principal>
+            <Dependent Role="Chi_Tiet_Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Don_Hang__MaTK__48CFD27E">
+          <End Role="Tai_Khoan" Type="Self.Tai_Khoan" Multiplicity="0..1" />
+          <End Role="Don_Hang" Type="Self.Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="Don_Hang">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Giao_Hang__MaDH__5070F446">
+          <End Role="Don_Hang" Type="Self.Don_Hang" Multiplicity="0..1" />
+          <End Role="Giao_Hang" Type="Self.Giao_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Principal>
+            <Dependent Role="Giao_Hang">
+              <PropertyRef Name="MaDH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Giao_Hang__MaTK__5165187F">
+          <End Role="Tai_Khoan" Type="Self.Tai_Khoan" Multiplicity="0..1" />
+          <End Role="Giao_Hang" Type="Self.Giao_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="Giao_Hang">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LienHe__MaTK__5812160E">
+          <End Role="Tai_Khoan" Type="Self.Tai_Khoan" Multiplicity="0..1" />
+          <End Role="LienHe" Type="Self.LienHe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="LienHe">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LienHe__NguoiPha__5AEE82B9">
+          <End Role="Tai_Khoan" Type="Self.Tai_Khoan" Multiplicity="0..1" />
+          <End Role="LienHe" Type="Self.LienHe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="LienHe">
+              <PropertyRef Name="NguoiPhanHoi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mon_An__MaLoai__3D5E1FD2">
+          <End Role="Loai_Mon" Type="Self.Loai_Mon" Multiplicity="0..1" />
+          <End Role="Mon_An" Type="Self.Mon_An" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Loai_Mon">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="Mon_An">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mon_Khuye__MaMon__44FF419A">
+          <End Role="Mon_An" Type="Self.Mon_An" Multiplicity="1" />
+          <End Role="Mon_Khuyen_Mai" Type="Self.Mon_Khuyen_Mai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mon_An">
+              <PropertyRef Name="MaMon" />
+            </Principal>
+            <Dependent Role="Mon_Khuyen_Mai">
+              <PropertyRef Name="MaMon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mon_Khuyen__MaKM__45F365D3">
+          <End Role="Khuyen_Mai" Type="Self.Khuyen_Mai" Multiplicity="1" />
+          <End Role="Mon_Khuyen_Mai" Type="Self.Mon_Khuyen_Mai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Khuyen_Mai">
+              <PropertyRef Name="MaKM" />
+            </Principal>
+            <Dependent Role="Mon_Khuyen_Mai">
+              <PropertyRef Name="MaKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_CapNhatGiaMon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaMon" Type="int" Mode="In" />
+          <Parameter Name="GiaMoi" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="sp_DangKy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="HoTen" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="MatKhau" Type="nvarchar" Mode="In" />
+          <Parameter Name="DiaChi" Type="nvarchar" Mode="In" />
+          <Parameter Name="SoDT" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_DangNhap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="MatKhau" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_DoanhThuHomNay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GuiLienHe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTK" Type="int" Mode="In" />
+          <Parameter Name="HoTen" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="NoiDung" Type="ntext" Mode="In" />
+        </Function>
+        <Function Name="sp_TaoDonHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaTK" Type="int" Mode="In" />
+          <Parameter Name="DiaChiGiao" Type="nvarchar" Mode="In" />
+          <Parameter Name="GhiChu" Type="nvarchar" Mode="In" />
+          <Parameter Name="MaDH_OUT" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_TimKiemMon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemChiTietDon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaDH" Type="int" Mode="In" />
+          <Parameter Name="MaMon" Type="int" Mode="In" />
+          <Parameter Name="SoLuong" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemMon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaLoai" Type="int" Mode="In" />
+          <Parameter Name="TenMon" Type="nvarchar" Mode="In" />
+          <Parameter Name="MoTa" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Gia" Type="decimal" Mode="In" />
+          <Parameter Name="HinhAnh" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_XoaMon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="MaMon" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="KFC_StoreModelStoreContainer">
+          <EntitySet Name="Chi_Nhanh" EntityType="Self.Chi_Nhanh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chi_Tiet_Don_Hang" EntityType="Self.Chi_Tiet_Don_Hang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Don_Hang" EntityType="Self.Don_Hang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Giao_Hang" EntityType="Self.Giao_Hang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Khuyen_Mai" EntityType="Self.Khuyen_Mai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LienHe" EntityType="Self.LienHe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Loai_Mon" EntityType="Self.Loai_Mon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mon_An" EntityType="Self.Mon_An" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mon_Khuyen_Mai" EntityType="Self.Mon_Khuyen_Mai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tai_Khoan" EntityType="Self.Tai_Khoan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Chi_Tiet___MaMon__4D94879B" Association="Self.FK__Chi_Tiet___MaMon__4D94879B">
+            <End Role="Mon_An" EntitySet="Mon_An" />
+            <End Role="Chi_Tiet_Don_Hang" EntitySet="Chi_Tiet_Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Chi_Tiet_D__MaDH__4CA06362" Association="Self.FK__Chi_Tiet_D__MaDH__4CA06362">
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+            <End Role="Chi_Tiet_Don_Hang" EntitySet="Chi_Tiet_Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Don_Hang__MaTK__48CFD27E" Association="Self.FK__Don_Hang__MaTK__48CFD27E">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Giao_Hang__MaDH__5070F446" Association="Self.FK__Giao_Hang__MaDH__5070F446">
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+            <End Role="Giao_Hang" EntitySet="Giao_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Giao_Hang__MaTK__5165187F" Association="Self.FK__Giao_Hang__MaTK__5165187F">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="Giao_Hang" EntitySet="Giao_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LienHe__MaTK__5812160E" Association="Self.FK__LienHe__MaTK__5812160E">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="LienHe" EntitySet="LienHe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LienHe__NguoiPha__5AEE82B9" Association="Self.FK__LienHe__NguoiPha__5AEE82B9">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="LienHe" EntitySet="LienHe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mon_An__MaLoai__3D5E1FD2" Association="Self.FK__Mon_An__MaLoai__3D5E1FD2">
+            <End Role="Loai_Mon" EntitySet="Loai_Mon" />
+            <End Role="Mon_An" EntitySet="Mon_An" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mon_Khuye__MaMon__44FF419A" Association="Self.FK__Mon_Khuye__MaMon__44FF419A">
+            <End Role="Mon_An" EntitySet="Mon_An" />
+            <End Role="Mon_Khuyen_Mai" EntitySet="Mon_Khuyen_Mai" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mon_Khuyen__MaKM__45F365D3" Association="Self.FK__Mon_Khuyen__MaKM__45F365D3">
+            <End Role="Khuyen_Mai" EntitySet="Khuyen_Mai" />
+            <End Role="Mon_Khuyen_Mai" EntitySet="Mon_Khuyen_Mai" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KFC_StoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="KFC_StoreEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DonCuaShipper" ReturnType="Collection(KFC_StoreModel.sp_DonCuaShipper_Result)">
+            <Parameter Name="MaShipper" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GanShipper">
+            <Parameter Name="MaDH" Mode="In" Type="Int32" />
+            <Parameter Name="MaShipper" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(KFC_StoreModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(KFC_StoreModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_HuyDonHang">
+          <Parameter Name="MaDH" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SearchMonTheoTen" ReturnType="Collection(KFC_StoreModel.sp_SearchMonTheoTen_Result)">
+            <Parameter Name="TuKhoa" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TaoDonHang">
+            <Parameter Name="MaTK" Mode="In" Type="Int32" />
+            <Parameter Name="DiaChiGiao" Mode="In" Type="String" />
+            <Parameter Name="GhiChu" Mode="In" Type="String" />
+            <Parameter Name="MaDH_OUT" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemChiTietDonHang">
+            <Parameter Name="MaDH" Mode="In" Type="Int32" />
+            <Parameter Name="MaMon" Mode="In" Type="Int32" />
+            <Parameter Name="SoLuong" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemKhuyenMaiVaGanMon">
+            <Parameter Name="TenKM" Mode="In" Type="String" />
+            <Parameter Name="NoiDung" Mode="In" Type="String" />
+            <Parameter Name="PhanTram" Mode="In" Type="Int32" />
+            <Parameter Name="NgayBD" Mode="In" Type="DateTime" />
+            <Parameter Name="NgayKT" Mode="In" Type="DateTime" />
+            <Parameter Name="MaMonList" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeDoanhThu_Thang" ReturnType="Collection(Decimal)">
+            <Parameter Name="Nam" Mode="In" Type="Int32" />
+            <Parameter Name="Thang" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateTrangThaiGiao">
+            <Parameter Name="MaGH" Mode="In" Type="Int32" />
+            <Parameter Name="TrangThai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="sp_XacNhanThanhToan">
+            <Parameter Name="MaDH" Mode="In" Type="Int32" />
+            <Parameter Name="PhuongThuc" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_CapNhatThongTin">
+            <Parameter Name="MaTK" Mode="In" Type="Int32" />
+            <Parameter Name="HoTen" Mode="In" Type="String" />
+            <Parameter Name="DiaChi" Mode="In" Type="String" />
+            <Parameter Name="SoDT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DangKy" ReturnType="Collection(Int32)">
+            <Parameter Name="HoTen" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="MatKhau" Mode="In" Type="String" />
+            <Parameter Name="DiaChi" Mode="In" Type="String" />
+            <Parameter Name="SoDT" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DangNhap" ReturnType="Collection(KFC_StoreModel.sp_DangNhap_Result)">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="MatKhau" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GuiLienHe">
+            <Parameter Name="MaTK" Mode="In" Type="Int32" />
+            <Parameter Name="HoTen" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="NoiDung" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LichSuDonHang" ReturnType="Collection(KFC_StoreModel.sp_LichSuDonHang_Result)">
+          <Parameter Name="MaTK" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SuaMon">
+            <Parameter Name="MaMon" Mode="In" Type="Int32" />
+            <Parameter Name="TenMon" Mode="In" Type="String" />
+            <Parameter Name="Gia" Mode="In" Type="Decimal" />
+            <Parameter Name="HinhAnh" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TimKiemMon" ReturnType="Collection(KFC_StoreModel.sp_TimKiemMon_Result)">
+          <Parameter Name="Keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TopMonBanChay" ReturnType="Collection(KFC_StoreModel.sp_TopMonBanChay_Result)" />
+          <FunctionImport Name="sp_ThemChiNhanh">
+            <Parameter Name="TenCN" Mode="In" Type="String" />
+            <Parameter Name="DiaChi" Mode="In" Type="String" />
+            <Parameter Name="SoDT" Mode="In" Type="String" />
+            <Parameter Name="LinkMap" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemChiTietDon">
+            <Parameter Name="MaDH" Mode="In" Type="Int32" />
+            <Parameter Name="MaMon" Mode="In" Type="Int32" />
+            <Parameter Name="SoLuong" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemMon">
+            <Parameter Name="MaLoai" Mode="In" Type="Int32" />
+            <Parameter Name="TenMon" Mode="In" Type="String" />
+            <Parameter Name="MoTa" Mode="In" Type="String" />
+            <Parameter Name="Gia" Mode="In" Type="Decimal" />
+            <Parameter Name="HinhAnh" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeDoanhThu" ReturnType="Collection(Decimal)">
+            <Parameter Name="Thang" Mode="In" Type="Int32" />
+            <Parameter Name="Nam" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaMon">
+          <Parameter Name="MaMon" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_CapNhatGiaMon">
+            <Parameter Name="MaMon" Mode="In" Type="Int32" />
+            <Parameter Name="GiaMoi" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DoanhThuHomNay" ReturnType="Collection(Decimal)" />
+          <EntitySet Name="Chi_Nhanh" EntityType="KFC_StoreModel.Chi_Nhanh" />
+          <EntitySet Name="Chi_Tiet_Don_Hang" EntityType="KFC_StoreModel.Chi_Tiet_Don_Hang" />
+          <EntitySet Name="Don_Hang" EntityType="KFC_StoreModel.Don_Hang" />
+          <EntitySet Name="Giao_Hang" EntityType="KFC_StoreModel.Giao_Hang" />
+          <EntitySet Name="Khuyen_Mai" EntityType="KFC_StoreModel.Khuyen_Mai" />
+          <EntitySet Name="LienHes" EntityType="KFC_StoreModel.LienHe" />
+          <EntitySet Name="Loai_Mon" EntityType="KFC_StoreModel.Loai_Mon" />
+          <EntitySet Name="Mon_An" EntityType="KFC_StoreModel.Mon_An" />
+          <EntitySet Name="Tai_Khoan" EntityType="KFC_StoreModel.Tai_Khoan" />
+          <AssociationSet Name="FK__Chi_Tiet___MaMon__4D94879B" Association="KFC_StoreModel.FK__Chi_Tiet___MaMon__4D94879B">
+            <End Role="Mon_An" EntitySet="Mon_An" />
+            <End Role="Chi_Tiet_Don_Hang" EntitySet="Chi_Tiet_Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Chi_Tiet_D__MaDH__4CA06362" Association="KFC_StoreModel.FK__Chi_Tiet_D__MaDH__4CA06362">
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+            <End Role="Chi_Tiet_Don_Hang" EntitySet="Chi_Tiet_Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Don_Hang__MaTK__48CFD27E" Association="KFC_StoreModel.FK__Don_Hang__MaTK__48CFD27E">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Giao_Hang__MaDH__5070F446" Association="KFC_StoreModel.FK__Giao_Hang__MaDH__5070F446">
+            <End Role="Don_Hang" EntitySet="Don_Hang" />
+            <End Role="Giao_Hang" EntitySet="Giao_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Giao_Hang__MaTK__5165187F" Association="KFC_StoreModel.FK__Giao_Hang__MaTK__5165187F">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="Giao_Hang" EntitySet="Giao_Hang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LienHe__MaTK__5812160E" Association="KFC_StoreModel.FK__LienHe__MaTK__5812160E">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="LienHe" EntitySet="LienHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LienHe__NguoiPha__5AEE82B9" Association="KFC_StoreModel.FK__LienHe__NguoiPha__5AEE82B9">
+            <End Role="Tai_Khoan" EntitySet="Tai_Khoan" />
+            <End Role="LienHe" EntitySet="LienHes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mon_An__MaLoai__3D5E1FD2" Association="KFC_StoreModel.FK__Mon_An__MaLoai__3D5E1FD2">
+            <End Role="Loai_Mon" EntitySet="Loai_Mon" />
+            <End Role="Mon_An" EntitySet="Mon_An" />
+          </AssociationSet>
+          <AssociationSet Name="Mon_Khuyen_Mai" Association="KFC_StoreModel.Mon_Khuyen_Mai">
+            <End Role="Mon_An" EntitySet="Mon_An" />
+            <End Role="Khuyen_Mai" EntitySet="Khuyen_Mai" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="sp_DonCuaShipper_Result">
+          <Property Type="Int32" Name="MaGH" Nullable="false" />
+          <Property Type="Int32" Name="MaDH" Nullable="true" />
+          <Property Type="Int32" Name="MaTK" Nullable="true" />
+          <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="ThoiGianCapNhat" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="TongTien" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="DiaChiGiao" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_SearchMonTheoTen_Result">
+          <Property Type="Int32" Name="MaMon" Nullable="false" />
+          <Property Type="Int32" Name="MaLoai" Nullable="true" />
+          <Property Type="String" Name="TenMon" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="MoTa" Nullable="true" MaxLength="255" />
+          <Property Type="Decimal" Name="Gia" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="HinhAnh" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="TrangThai" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_DangNhap_Result">
+          <Property Type="Int32" Name="MaTK" Nullable="false" />
+          <Property Type="String" Name="HoTen" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="MatKhau" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DiaChi" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="SoDT" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="VaiTro" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="NgayTao" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="TrangThai" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_LichSuDonHang_Result">
+          <Property Type="Int32" Name="MaDH" Nullable="false" />
+          <Property Type="Int32" Name="MaTK" Nullable="true" />
+          <Property Type="DateTime" Name="NgayDat" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="TongTien" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="TrangThai" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="DiaChiGiao" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="GhiChu" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="sp_TimKiemMon_Result">
+          <Property Type="Int32" Name="MaMon" Nullable="false" />
+          <Property Type="Int32" Name="MaLoai" Nullable="true" />
+          <Property Type="String" Name="TenMon" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="MoTa" Nullable="true" />
+          <Property Type="Decimal" Name="Gia" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="String" Name="HinhAnh" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="TrangThai" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_TopMonBanChay_Result">
+          <Property Type="String" Name="TenMon" Nullable="false" MaxLength="150" />
+          <Property Type="Int32" Name="DaBan" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Chi_Nhanh">
+          <Key>
+            <PropertyRef Name="MaCN" />
+          </Key>
+          <Property Name="MaCN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenCN" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SoDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GioMoCua" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LinkMap" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Chi_Tiet_Don_Hang">
+          <Key>
+            <PropertyRef Name="MaDH" />
+            <PropertyRef Name="MaMon" />
+          </Key>
+          <Property Name="MaDH" Type="Int32" Nullable="false" />
+          <Property Name="MaMon" Type="Int32" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="DonGia" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Mon_An" Relationship="KFC_StoreModel.FK__Chi_Tiet___MaMon__4D94879B" FromRole="Chi_Tiet_Don_Hang" ToRole="Mon_An" />
+          <NavigationProperty Name="Don_Hang" Relationship="KFC_StoreModel.FK__Chi_Tiet_D__MaDH__4CA06362" FromRole="Chi_Tiet_Don_Hang" ToRole="Don_Hang" />
+        </EntityType>
+        <EntityType Name="Don_Hang">
+          <Key>
+            <PropertyRef Name="MaDH" />
+          </Key>
+          <Property Name="MaDH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTK" Type="Int32" />
+          <Property Name="NgayDat" Type="DateTime" Precision="3" />
+          <Property Name="TongTien" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChiGiao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GhiChu" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Chi_Tiet_Don_Hang" Relationship="KFC_StoreModel.FK__Chi_Tiet_D__MaDH__4CA06362" FromRole="Don_Hang" ToRole="Chi_Tiet_Don_Hang" />
+          <NavigationProperty Name="Tai_Khoan" Relationship="KFC_StoreModel.FK__Don_Hang__MaTK__48CFD27E" FromRole="Don_Hang" ToRole="Tai_Khoan" />
+          <NavigationProperty Name="Giao_Hang" Relationship="KFC_StoreModel.FK__Giao_Hang__MaDH__5070F446" FromRole="Don_Hang" ToRole="Giao_Hang" />
+        </EntityType>
+        <EntityType Name="Giao_Hang">
+          <Key>
+            <PropertyRef Name="MaGH" />
+          </Key>
+          <Property Name="MaGH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaDH" Type="Int32" />
+          <Property Name="MaTK" Type="Int32" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ThoiGianCapNhat" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Don_Hang" Relationship="KFC_StoreModel.FK__Giao_Hang__MaDH__5070F446" FromRole="Giao_Hang" ToRole="Don_Hang" />
+          <NavigationProperty Name="Tai_Khoan" Relationship="KFC_StoreModel.FK__Giao_Hang__MaTK__5165187F" FromRole="Giao_Hang" ToRole="Tai_Khoan" />
+        </EntityType>
+        <EntityType Name="Khuyen_Mai">
+          <Key>
+            <PropertyRef Name="MaKM" />
+          </Key>
+          <Property Name="MaKM" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenKM" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="NoiDung" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PhanTramGiam" Type="Int32" />
+          <Property Name="NgayBatDau" Type="DateTime" Precision="0" />
+          <Property Name="NgayKetThuc" Type="DateTime" Precision="0" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="Mon_An" Relationship="KFC_StoreModel.Mon_Khuyen_Mai" FromRole="Khuyen_Mai" ToRole="Mon_An" />
+        </EntityType>
+        <EntityType Name="LienHe">
+          <Key>
+            <PropertyRef Name="MaLH" />
+          </Key>
+          <Property Name="MaLH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTK" Type="Int32" />
+          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SoDienThoai" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TieuDe" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayGui" Type="DateTime" Precision="3" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <Property Name="PhanHoi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayPhanHoi" Type="DateTime" Precision="3" />
+          <Property Name="NguoiPhanHoi" Type="Int32" />
+          <NavigationProperty Name="Tai_Khoan" Relationship="KFC_StoreModel.FK__LienHe__MaTK__5812160E" FromRole="LienHe" ToRole="Tai_Khoan" />
+          <NavigationProperty Name="Tai_Khoan1" Relationship="KFC_StoreModel.FK__LienHe__NguoiPha__5AEE82B9" FromRole="LienHe" ToRole="Tai_Khoan" />
+        </EntityType>
+        <EntityType Name="Loai_Mon">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenLoai" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Mon_An" Relationship="KFC_StoreModel.FK__Mon_An__MaLoai__3D5E1FD2" FromRole="Loai_Mon" ToRole="Mon_An" />
+        </EntityType>
+        <EntityType Name="Mon_An">
+          <Key>
+            <PropertyRef Name="MaMon" />
+          </Key>
+          <Property Name="MaMon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaLoai" Type="Int32" />
+          <Property Name="TenMon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Gia" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="Chi_Tiet_Don_Hang" Relationship="KFC_StoreModel.FK__Chi_Tiet___MaMon__4D94879B" FromRole="Mon_An" ToRole="Chi_Tiet_Don_Hang" />
+          <NavigationProperty Name="Loai_Mon" Relationship="KFC_StoreModel.FK__Mon_An__MaLoai__3D5E1FD2" FromRole="Mon_An" ToRole="Loai_Mon" />
+          <NavigationProperty Name="Khuyen_Mai" Relationship="KFC_StoreModel.Mon_Khuyen_Mai" FromRole="Mon_An" ToRole="Khuyen_Mai" />
+        </EntityType>
+        <EntityType Name="Tai_Khoan">
+          <Key>
+            <PropertyRef Name="MaTK" />
+          </Key>
+          <Property Name="MaTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MatKhau" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SoDT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="VaiTro" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="Don_Hang" Relationship="KFC_StoreModel.FK__Don_Hang__MaTK__48CFD27E" FromRole="Tai_Khoan" ToRole="Don_Hang" />
+          <NavigationProperty Name="Giao_Hang" Relationship="KFC_StoreModel.FK__Giao_Hang__MaTK__5165187F" FromRole="Tai_Khoan" ToRole="Giao_Hang" />
+          <NavigationProperty Name="LienHes" Relationship="KFC_StoreModel.FK__LienHe__MaTK__5812160E" FromRole="Tai_Khoan" ToRole="LienHe" />
+          <NavigationProperty Name="LienHes1" Relationship="KFC_StoreModel.FK__LienHe__NguoiPha__5AEE82B9" FromRole="Tai_Khoan" ToRole="LienHe" />
+        </EntityType>
+        <Association Name="FK__Chi_Tiet___MaMon__4D94879B">
+          <End Type="KFC_StoreModel.Mon_An" Role="Mon_An" Multiplicity="1" />
+          <End Type="KFC_StoreModel.Chi_Tiet_Don_Hang" Role="Chi_Tiet_Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mon_An">
+              <PropertyRef Name="MaMon" />
+            </Principal>
+            <Dependent Role="Chi_Tiet_Don_Hang">
+              <PropertyRef Name="MaMon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Chi_Tiet_D__MaDH__4CA06362">
+          <End Type="KFC_StoreModel.Don_Hang" Role="Don_Hang" Multiplicity="1" />
+          <End Type="KFC_StoreModel.Chi_Tiet_Don_Hang" Role="Chi_Tiet_Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Principal>
+            <Dependent Role="Chi_Tiet_Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Don_Hang__MaTK__48CFD27E">
+          <End Type="KFC_StoreModel.Tai_Khoan" Role="Tai_Khoan" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.Don_Hang" Role="Don_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="Don_Hang">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Giao_Hang__MaDH__5070F446">
+          <End Type="KFC_StoreModel.Don_Hang" Role="Don_Hang" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.Giao_Hang" Role="Giao_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Don_Hang">
+              <PropertyRef Name="MaDH" />
+            </Principal>
+            <Dependent Role="Giao_Hang">
+              <PropertyRef Name="MaDH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Giao_Hang__MaTK__5165187F">
+          <End Type="KFC_StoreModel.Tai_Khoan" Role="Tai_Khoan" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.Giao_Hang" Role="Giao_Hang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="Giao_Hang">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LienHe__MaTK__5812160E">
+          <End Type="KFC_StoreModel.Tai_Khoan" Role="Tai_Khoan" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.LienHe" Role="LienHe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="LienHe">
+              <PropertyRef Name="MaTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LienHe__NguoiPha__5AEE82B9">
+          <End Type="KFC_StoreModel.Tai_Khoan" Role="Tai_Khoan" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.LienHe" Role="LienHe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tai_Khoan">
+              <PropertyRef Name="MaTK" />
+            </Principal>
+            <Dependent Role="LienHe">
+              <PropertyRef Name="NguoiPhanHoi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mon_An__MaLoai__3D5E1FD2">
+          <End Type="KFC_StoreModel.Loai_Mon" Role="Loai_Mon" Multiplicity="0..1" />
+          <End Type="KFC_StoreModel.Mon_An" Role="Mon_An" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Loai_Mon">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="Mon_An">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Mon_Khuyen_Mai">
+          <End Type="KFC_StoreModel.Mon_An" Role="Mon_An" Multiplicity="*" />
+          <End Type="KFC_StoreModel.Khuyen_Mai" Role="Khuyen_Mai" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KFC_StoreModelStoreContainer" CdmEntityContainer="KFC_StoreEntities">
+          <FunctionImportMapping FunctionImportName="sp_TaoDonHang" FunctionName="KFC_StoreModel.Store.sp_TaoDonHang" />
+          <FunctionImportMapping FunctionImportName="sp_DangKy" FunctionName="KFC_StoreModel.Store.sp_DangKy" />
+          <FunctionImportMapping FunctionImportName="sp_DangNhap" FunctionName="KFC_StoreModel.Store.sp_DangNhap">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KFC_StoreModel.sp_DangNhap_Result">
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="SoDT" ColumnName="SoDT" />
+                <ScalarProperty Name="VaiTro" ColumnName="VaiTro" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GuiLienHe" FunctionName="KFC_StoreModel.Store.sp_GuiLienHe" />
+          <FunctionImportMapping FunctionImportName="sp_TimKiemMon" FunctionName="KFC_StoreModel.Store.sp_TimKiemMon">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="KFC_StoreModel.sp_TimKiemMon_Result">
+                <ScalarProperty Name="MaMon" ColumnName="MaMon" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TenMon" ColumnName="TenMon" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="Gia" ColumnName="Gia" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ThemChiTietDon" FunctionName="KFC_StoreModel.Store.sp_ThemChiTietDon" />
+          <FunctionImportMapping FunctionImportName="sp_ThemMon" FunctionName="KFC_StoreModel.Store.sp_ThemMon" />
+          <FunctionImportMapping FunctionImportName="sp_XoaMon" FunctionName="KFC_StoreModel.Store.sp_XoaMon" />
+          <FunctionImportMapping FunctionImportName="sp_CapNhatGiaMon" FunctionName="KFC_StoreModel.Store.sp_CapNhatGiaMon" />
+          <FunctionImportMapping FunctionImportName="sp_DoanhThuHomNay" FunctionName="KFC_StoreModel.Store.sp_DoanhThuHomNay" />
+          <EntitySetMapping Name="Chi_Nhanh">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Chi_Nhanh">
+              <MappingFragment StoreEntitySet="Chi_Nhanh">
+                <ScalarProperty Name="LinkMap" ColumnName="LinkMap" />
+                <ScalarProperty Name="GioMoCua" ColumnName="GioMoCua" />
+                <ScalarProperty Name="SoDT" ColumnName="SoDT" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="TenCN" ColumnName="TenCN" />
+                <ScalarProperty Name="MaCN" ColumnName="MaCN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chi_Tiet_Don_Hang">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Chi_Tiet_Don_Hang">
+              <MappingFragment StoreEntitySet="Chi_Tiet_Don_Hang">
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="MaMon" ColumnName="MaMon" />
+                <ScalarProperty Name="MaDH" ColumnName="MaDH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Don_Hang">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Don_Hang">
+              <MappingFragment StoreEntitySet="Don_Hang">
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="DiaChiGiao" ColumnName="DiaChiGiao" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="MaDH" ColumnName="MaDH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Giao_Hang">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Giao_Hang">
+              <MappingFragment StoreEntitySet="Giao_Hang">
+                <ScalarProperty Name="ThoiGianCapNhat" ColumnName="ThoiGianCapNhat" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="MaDH" ColumnName="MaDH" />
+                <ScalarProperty Name="MaGH" ColumnName="MaGH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Khuyen_Mai">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Khuyen_Mai">
+              <MappingFragment StoreEntitySet="Khuyen_Mai">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayKetThuc" ColumnName="NgayKetThuc" />
+                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+                <ScalarProperty Name="PhanTramGiam" ColumnName="PhanTramGiam" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="TenKM" ColumnName="TenKM" />
+                <ScalarProperty Name="MaKM" ColumnName="MaKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LienHes">
+            <EntityTypeMapping TypeName="KFC_StoreModel.LienHe">
+              <MappingFragment StoreEntitySet="LienHe">
+                <ScalarProperty Name="NguoiPhanHoi" ColumnName="NguoiPhanHoi" />
+                <ScalarProperty Name="NgayPhanHoi" ColumnName="NgayPhanHoi" />
+                <ScalarProperty Name="PhanHoi" ColumnName="PhanHoi" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayGui" ColumnName="NgayGui" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+                <ScalarProperty Name="MaLH" ColumnName="MaLH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loai_Mon">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Loai_Mon">
+              <MappingFragment StoreEntitySet="Loai_Mon">
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mon_An">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Mon_An">
+              <MappingFragment StoreEntitySet="Mon_An">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="Gia" ColumnName="Gia" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="TenMon" ColumnName="TenMon" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="MaMon" ColumnName="MaMon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tai_Khoan">
+            <EntityTypeMapping TypeName="KFC_StoreModel.Tai_Khoan">
+              <MappingFragment StoreEntitySet="Tai_Khoan">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="VaiTro" ColumnName="VaiTro" />
+                <ScalarProperty Name="SoDT" ColumnName="SoDT" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaTK" ColumnName="MaTK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Mon_Khuyen_Mai" TypeName="KFC_StoreModel.Mon_Khuyen_Mai" StoreEntitySet="Mon_Khuyen_Mai">
+            <EndProperty Name="Khuyen_Mai">
+              <ScalarProperty Name="MaKM" ColumnName="MaKM" />
+            </EndProperty>
+            <EndProperty Name="Mon_An">
+              <ScalarProperty Name="MaMon" ColumnName="MaMon" />
+            </EndProperty>
+          </AssociationSetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

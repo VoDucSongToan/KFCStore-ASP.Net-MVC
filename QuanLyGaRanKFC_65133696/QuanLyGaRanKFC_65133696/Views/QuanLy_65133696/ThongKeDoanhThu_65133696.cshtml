@@ -1,0 +1,126 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Don_Hang>
+
+@{
+    ViewBag.Title = "Báo Cáo Doanh Thu Chi Tiết";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3">BÁO CÁO DOANH THU</h3>
+        <button onclick="window.print()" class="btn btn-dark btn-print">
+            <i class="fa-solid fa-print"></i> IN BÁO CÁO
+        </button>
+    </div>
+
+    <ul class="nav nav-tabs mb-3 btn-print">
+        <li class="nav-item">
+            <button class="nav-link active fw-bold text-danger" data-bs-toggle="tab" data-bs-target="#tabNgay">CHI TIẾT THEO NGÀY</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link fw-bold text-danger" data-bs-toggle="tab" data-bs-target="#tabThang">TỔNG HỢP THEO THÁNG</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane fade show active" id="tabNgay">
+            <div class="accordion" id="accordionRevenue">
+                @{
+                    // Gom nhóm dữ liệu theo Ngày ngay tại View
+                    var groupsDay = Model.GroupBy(x => x.NgayDat.Value.Date)
+                                         .OrderByDescending(g => g.Key)
+                                         .ToList();
+                    int index = 0;
+                }
+
+                @foreach (var group in groupsDay)
+                {
+                    index++;
+                    // Tính tổng con cho từng ngày
+                    decimal tongTienNgay = group.Sum(x => x.TongTien) ?? 0;
+                    int soDon = group.Count();
+
+                    <div class="accordion-item shadow-sm mb-3 border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@index">
+                                <span class="me-4"><i class="fa-regular fa-calendar text-danger"></i> @group.Key.ToString("dd/MM/yyyy")</span>
+                                <span class="badge bg-secondary me-3">@soDon đơn hàng</span>
+                                <span class="ms-auto text-danger fs-5">@string.Format("{0:N0} đ", tongTienNgay)</span>
+                            </button>
+                        </h2>
+                        <div id="collapse_@index" class="accordion-collapse collapse" data-bs-parent="#accordionRevenue">
+                            <div class="accordion-body p-0">
+                                <table class="table table-bordered mb-0 table-sm align-middle">
+                                    <thead class="bg-light text-muted small">
+                                        <tr>
+                                            <th class="ps-4">Mã ĐH</th>
+                                            <th>Khách hàng</th>
+                                            <th>Thời gian</th>
+                                            <th class="text-end pe-4">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in group)
+                                        {
+                                            <tr>
+                                                <td class="ps-4">#@item.MaDH</td>
+                                                <td>
+                                                    @if (item.Tai_Khoan != null)
+                                                    {<span>@item.Tai_Khoan.HoTen</span> }
+                                                else
+                                                { <span class="text-muted">Khách vãng lai</span>}
+                                                </td>
+                                                <td>@item.NgayDat.Value.ToString("HH:mm")</td>
+                                                <td class="text-end pe-4 fw-bold text-success">
+                                                    @string.Format("{0:N0}", item.TongTien)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="alert alert-danger text-center fw-bold fs-4 mt-4">
+                    TỔNG DOANH THU: @string.Format("{0:N0} VNĐ", Model.Sum(x => x.TongTien))
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tabThang">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Tháng / Năm</th>
+                                <th>Tổng số đơn</th>
+                                <th>Tổng doanh thu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var groupsMonth = Model.GroupBy(x => new { x.NgayDat.Value.Month, x.NgayDat.Value.Year })
+                                                       .OrderByDescending(g => g.Key.Year)
+                                                       .ThenByDescending(g => g.Key.Month);
+                            }
+                            @foreach (var group in groupsMonth)
+                            {
+                                <tr>
+                                    <td class="fw-bold fs-5 text-secondary">Tháng @group.Key.Month / @group.Key.Year</td>
+                                    <td><span class="badge bg-secondary">@group.Count() đơn</span></td>
+                                    <td class="fw-bold text-danger fs-5">@string.Format("{0:N0} đ", group.Sum(x => x.TongTien))</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

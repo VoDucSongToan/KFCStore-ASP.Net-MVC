@@ -1,0 +1,36 @@
+# Visual Studio / IDE
+.vs/
+**/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.idea/
+.vscode/
+
+# Build / NuGet packages (restored by Visual Studio)
+[Bb]in/
+[Oo]bj/
+packages/
+**/packages/
+TestResults/
+*.pdb
+*.cache
+
+# Local/runtime/config backups
+*.log
+*.bak
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.publishsettings
+*.pubxml.user
+App_Data/*.mdf
+App_Data/*.ldf
+
+# Secrets and local private overrides
+.env
+.env.*
+!*.env.example
+*.secrets.json

@@ -1,0 +1,67 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Loai_Mon>
+
+@{
+    ViewBag.Title = "Quản Lý Danh Mục";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3 mb-4">DANH MỤC SẢN PHẨM</h3>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow border-0 mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h6 class="mb-0 fw-bold"><i class="fa-solid fa-plus"></i> Thêm Danh Mục</h6>
+                </div>
+                <div class="card-body">
+                    <form action="@Url.Action("ThemLoaiMon_65133696", "QuanLy_65133696")" method="post">
+                        <div class="mb-3">
+                            <label class="fw-bold mb-1">Tên loại món:</label>
+                            <input type="text" name="TenLoai" class="form-control" required placeholder="Ví dụ: Gà Rán, Combo..." />
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Lưu Danh Mục</button>
+                    </form>
+                </div>
+            </div>
+            @if (TempData["ThongBao"] != null)
+            {<div class="alert alert-success">@TempData["ThongBao"]</div>}
+            @if (TempData["Loi"] != null)
+            {<div class="alert alert-danger">@TempData["Loi"]</div>}
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>Tên Loại</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">#@item.MaLoai</td>
+                                    <td class="fw-bold text-danger">@item.TenLoai</td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("SuaLoaiMon_65133696", "QuanLy_65133696", new { id = item.MaLoai })" class="btn btn-sm btn-primary me-1"><i class="fa-solid fa-pen"></i> Sửa</a>
+                                        <a href="@Url.Action("XoaLoaiMon_65133696", "QuanLy_65133696", new { id = item.MaLoai })"
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Bạn có chắc muốn xóa danh mục này?');">
+                                            <i class="fa-solid fa-trash"></i> Xóa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

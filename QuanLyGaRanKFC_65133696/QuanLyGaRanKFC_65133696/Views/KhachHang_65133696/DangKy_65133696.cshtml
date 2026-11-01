@@ -1,0 +1,220 @@
+﻿@model QuanLyGaRanKFC_65133696.Models.Tai_Khoan
+
+@{
+    ViewBag.Title = "Đăng Ký Thành Viên";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+<style>
+    
+    .register-page-container {
+        background-color: #f0f2f5; 
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+    }
+
+    .register-form-box {
+        background-color: #ffffff; 
+        width: 100%;
+        max-width: 500px;
+        padding: 40px 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        border: 1px solid #eaeaea;
+    }
+
+    .register-title {
+        color: #E4002B; 
+        font-weight: 900;
+        font-size: 32px;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    .custom-input-group {
+        position: relative;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .custom-input {
+        width: 100%;
+        height: 50px;
+        background-color: #f7f7f7; 
+        border: 1px solid #e1e1e1; 
+        border-radius: 25px;
+        padding: 0 20px 0 55px;
+        color: #333; 
+        font-size: 15px;
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+    }
+
+        .custom-input:focus {
+            background-color: #fff;
+            border-color: #E4002B; 
+            box-shadow: 0 0 0 4px rgba(228, 0, 43, 0.1); 
+        }
+
+        .custom-input::placeholder {
+            color: #999; 
+        }
+
+    /* ICON */
+    .input-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: #888;
+        pointer-events: none;
+        transition: 0.3s;
+    }
+
+    .custom-input:focus + .input-icon {
+        color: #E4002B;
+    }
+
+    /* BUTTON */
+    .btn-register-red {
+        width: 100%;
+        height: 50px;
+        background: #E4002B;
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(228, 0, 43, 0.3);
+        transition: 0.3s;
+    }
+
+        .btn-register-red:hover {
+            background: #c00020;
+            box-shadow: 0 6px 20px rgba(228, 0, 43, 0.5);
+            transform: translateY(-2px);
+        }
+
+    .options-row {
+        text-align: left;
+        margin-top: 15px;
+        padding-left: 10px;
+        color: #666; /* Chữ xám đậm */
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+    }
+
+        .options-row input[type="checkbox"] {
+            accent-color: #E4002B; /* Màu checkbox đỏ */
+        }
+
+    .bottom-link {
+        margin-top: 25px;
+        color: #555;
+        font-size: 14px;
+    }
+
+        .bottom-link a {
+            color: #E4002B;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .bottom-link a:hover {
+                text-decoration: underline;
+            }
+
+    .field-validation-error {
+        color: #d93025;
+        font-size: 12px;
+        display: block;
+        text-align: left;
+        margin-left: 20px;
+        margin-top: 4px;
+    }
+</style>
+
+<div class="register-page-container">
+    <div class="register-form-box">
+        <h2 class="register-title">ĐĂNG KÝ</h2>
+
+        @using (Html.BeginForm("DangKy_65133696", "KhachHang_65133696", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "field-validation-error", @style = "text-align:center; margin-bottom:15px;" })
+
+            <div class="custom-input-group">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "custom-input", @placeholder = "Email của bạn...", @required = "required" } })
+                <i class="fa-solid fa-envelope input-icon"></i>
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "field-validation-error" })
+            </div>
+
+            <div class="custom-input-group">
+                @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "custom-input", @placeholder = "Họ và tên...", @required = "required" } })
+                <i class="fa-solid fa-user input-icon"></i>
+                @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "field-validation-error" })
+            </div>
+
+            <div class="custom-input-group">
+                @Html.EditorFor(model => model.SoDT, new { htmlAttributes = new { @class = "custom-input", @placeholder = "Số điện thoại..." } })
+                <i class="fa-solid fa-phone input-icon"></i>
+                @Html.ValidationMessageFor(model => model.SoDT, "", new { @class = "field-validation-error" })
+            </div>
+
+            <div class="custom-input-group">
+                @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "custom-input", @placeholder = "Địa chỉ liên hệ..." } })
+                <i class="fa-solid fa-location-dot input-icon"></i>
+            </div>
+
+            <div class="custom-input-group">
+                @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "custom-input", @type = "password", @id = "passMain", @placeholder = "Mật khẩu...", @required = "required" } })
+                <i class="fa-solid fa-lock input-icon"></i>
+                @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "field-validation-error" })
+            </div>
+
+            <div class="custom-input-group">
+                <input type="password" name="xacNhanMatKhau" id="passConfirm" class="custom-input" placeholder="Nhập lại mật khẩu..." required />
+                <i class="fa-solid fa-lock input-icon"></i>
+            </div>
+
+            <div class="options-row">
+                <input type="checkbox" onclick="togglePassword()" id="chkShow" style="margin-right: 8px; width:16px; height:16px; cursor: pointer;">
+                <label for="chkShow" style="cursor: pointer;">Hiển thị mật khẩu</label>
+            </div>
+
+            <button type="submit" class="btn-register-red">ĐĂNG KÝ NGAY</button>
+
+            <div class="bottom-link">
+                Đã có tài khoản? <a href="@Url.Action("DangNhap_65133696", "KhachHang_65133696")">Đăng nhập ngay</a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var p1 = document.getElementById("passMain");
+        var p2 = document.getElementById("passConfirm");
+        if (p1.type === "password") {
+            p1.type = "text";
+            p2.type = "text";
+        } else {
+            p1.type = "password";
+            p2.type = "password";
+        }
+    }
+</script>

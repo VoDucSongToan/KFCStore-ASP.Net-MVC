@@ -1,0 +1,73 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model Tai_Khoan
+
+@{
+    ViewBag.Title = "Cập Nhật Khách Hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow border-0" style="max-width: 700px; margin: 0 auto;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0 fw-bold">CẬP NHẬT THÔNG TIN</h5>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm("SuaKhachHang_65133696", "QuanLy_65133696", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.MaTK)
+                @Html.HiddenFor(m => m.VaiTro)
+
+                <div class="mb-3">
+                    <label class="fw-bold">Họ và tên:</label>
+                    @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", required = "required" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Email (Không thể sửa):</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control bg-light", @readonly = "readonly" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold text-danger">Mật khẩu mới (Để trống nếu không đổi):</label>
+                    <div class="input-group">
+                        <input type="password" name="MatKhau" class="form-control border-danger" id="newPass" placeholder="Nhập mật khẩu mới..." />
+                        <button class="btn btn-outline-danger" type="button" onclick="togglePass('newPass', 'iconEye2')">
+                            <i class="fa-solid fa-eye" id="iconEye2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Số điện thoại:</label>
+                    @Html.TextBoxFor(m => m.SoDT, new { @class = "form-control", required = "required" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Địa chỉ:</label>
+                    @Html.TextAreaFor(m => m.DiaChi, new { @class = "form-control", rows = "3" })
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="@Url.Action("QuanLyKhachHang_65133696", "QuanLy_65133696")" class="btn btn-secondary me-2">Hủy</a>
+                    <button type="submit" class="btn btn-primary px-4">CẬP NHẬT</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePass(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>

@@ -1,0 +1,71 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Chi_Tiet_Don_Hang>
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+    var donHang = ViewBag.DonHang as Don_Hang;
+}
+
+<div class="container" style="max-width: 900px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+
+    <div style="border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+        <h2 style="color: #E4002B; font-weight: 900; text-transform: uppercase; margin: 0;">
+            Đơn hàng #@donHang.MaDH
+        </h2>
+        <div style="margin-top: 10px; color: #666;">
+            Ngày đặt: <b>@string.Format("{0:dd/MM/yyyy HH:mm}", donHang.NgayDat)</b> <br />
+            Trạng thái:
+            <span class="badge bg-warning text-dark" style="font-size: 14px;">
+                @(donHang.TrangThai == "ChoXacNhan" ? "Chờ xác nhận" : donHang.TrangThai)
+            </span>
+        </div>
+    </div>
+
+    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <h5 style="font-weight: bold; color: #333;">Thông tin giao hàng</h5>
+        <p style="margin: 5px 0;"><i class="fa-solid fa-location-dot" style="color:#E4002B; width:20px;"></i> @donHang.DiaChiGiao</p>
+        <p style="margin: 5px 0;"><i class="fa-solid fa-note-sticky" style="color:#E4002B; width:20px;"></i> Ghi chú: @(string.IsNullOrEmpty(donHang.GhiChu) ? "Không có" : donHang.GhiChu)</p>
+    </div>
+
+    <table class="table table-hover">
+        <thead style="background: #E4002B; color: white;">
+            <tr>
+                <th>Món ăn</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-end">Đơn giá</th>
+                <th class="text-end">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="vertical-align: middle;">
+                        <div style="font-weight: bold;">@item.Mon_An.TenMon</div>
+                        <small style="color: #888;">Mã món: @item.MaMon</small>
+                    </td>
+                    <td class="text-center" style="vertical-align: middle;">x @item.SoLuong</td>
+                    <td class="text-end" style="vertical-align: middle;">@string.Format("{0:N0} đ", item.DonGia)</td>
+                    <td class="text-end" style="vertical-align: middle; font-weight: bold; color: #E4002B;">
+                        @string.Format("{0:N0} đ", item.SoLuong * item.DonGia)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot style="border-top: 2px solid #333;">
+            <tr>
+                <td colspan="3" class="text-end" style="font-size: 18px; font-weight: bold;">TỔNG TIỀN:</td>
+                <td class="text-end" style="font-size: 20px; font-weight: 900; color: #E4002B;">
+                    @string.Format("{0:N0} đ", donHang.TongTien)
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="@Url.Action("ThongTinCaNhan_65133696", "KhachHang_65133696")" class="btn btn-secondary btn-lg">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+</div>

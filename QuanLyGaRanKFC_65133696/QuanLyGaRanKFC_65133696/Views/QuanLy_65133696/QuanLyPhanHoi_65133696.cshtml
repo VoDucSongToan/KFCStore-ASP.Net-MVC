@@ -1,0 +1,76 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<LienHe>
+
+@{
+    ViewBag.Title = "Hộp Thư Khách Hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3 mb-4">PHẢN HỒI KHÁCH HÀNG</h3>
+
+    @if (TempData["ThongBao"] != null)
+    {
+        <div class="alert alert-success shadow-sm"><i class="fa-solid fa-check-circle"></i> @TempData["ThongBao"]</div>
+    }
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Người gửi & Thời gian</th>
+                        <th>Nội dung</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4" style="width: 250px;">
+                                <strong>@(item.Tai_Khoan != null ? item.Tai_Khoan.HoTen : "Khách vãng lai")</strong><br />
+                                <small class="text-muted">@item.Email</small><br />
+                                <small class="text-danger fw-bold"><i class="fa-regular fa-clock"></i> @string.Format("{0:dd/MM/yyyy HH:mm}", item.NgayGui)</small>
+                            </td>
+                            <td>
+                                <p class="mb-2 text-dark">@item.NoiDung</p>
+
+                                @if (item.TrangThai == true)
+                                {
+                                    <div class="alert alert-light border border-success p-2 small mb-0">
+                                        <i class="fa-solid fa-reply text-success"></i> <strong>Admin trả lời:</strong> @item.PhanHoi
+                                    </div>
+                                }
+                            </td>
+                            <td style="width: 140px;">
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="badge bg-success">Đã xử lý</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Chờ trả lời</span>
+                                }
+                            </td>
+                            <td style="width: 220px;">
+                                @if (item.TrangThai != true)
+                                {
+                                    using (Html.BeginForm("TraLoiPhanHoi_65133696", "QuanLy_65133696", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="id" value="@item.MaLH" />
+                                        <div class="input-group">
+                                            <input type="text" name="noiDungTraLoi" class="form-control form-control-sm" placeholder="Nhập câu trả lời..." required />
+                                            <button class="btn btn-primary btn-sm" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                                        </div>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

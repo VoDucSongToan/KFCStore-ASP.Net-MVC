@@ -1,0 +1,308 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Mon_An>
+
+@{
+    ViewBag.Title = "Giỏ Hàng Của Bạn";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+
+    // 1. Lấy Giỏ hàng
+    var gioHang = Session["GioHang_65133696"] as Dictionary<int, int>;
+
+    // 2. Tính Tổng tiền
+    decimal tongTienHang = 0;
+    if (Model != null && gioHang != null)
+    {
+        foreach (var item in Model)
+        {
+            if (gioHang.ContainsKey(item.MaMon))
+            {
+                tongTienHang += (decimal)item.Gia * gioHang[item.MaMon];
+            }
+        }
+    }
+
+    // 3. Tính Giảm giá & Thành tiền
+    decimal giamGia = ViewBag.GiamGia != null ? (decimal)ViewBag.GiamGia : 0;
+    decimal thanhTien = tongTienHang - giamGia;
+    if (thanhTien < 0) { thanhTien = 0; }
+
+    var myVouchers = ViewBag.VouchersCuaToi as List<Khuyen_Mai>;
+    var user = Session["NguoiDung_65133696"] as Tai_Khoan;
+}
+
+@functions {
+    public string LayThuMucAnh(string tenLoai)
+    {
+        if (string.IsNullOrEmpty(tenLoai)) return "MonMoi";
+        tenLoai = tenLoai.ToLower();
+        if (tenLoai.Contains("combo")) return "Combo";
+        if (tenLoai.Contains("gà") || tenLoai.Contains("ga")) return "MonGa";
+        if (tenLoai.Contains("burger") || tenLoai.Contains("cơm") || tenLoai.Contains("mì")) return "ComMiBurger";
+        if (tenLoai.Contains("giải khát") || tenLoai.Contains("uống")) return "GiaiKhat";
+        if (tenLoai.Contains("ưu đãi")) return "UuDai";
+        return "MonMoi";
+    }
+}
+
+<style>
+     
+    .cart-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+    }
+
+    .cart-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: #333;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .cart-table th {
+            text-align: left;
+            padding: 15px;
+            color: #666;
+            font-weight: 700;
+            border-bottom: 2px solid #f0f0f0;
+            text-transform: uppercase;
+        }
+
+        .cart-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+            color: #333;
+        }
+
+    .cart-item-img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border-radius: 10px;
+        border: 1px solid #eee;
+    }
+
+    .btn-qty {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-weight: bold;
+        color: #333;
+    }
+
+        .btn-qty:hover {
+            background: #E4002B;
+            color: #fff;
+            border-color: #E4002B;
+        }
+
+    .btn-checkout {
+        background: #E4002B;
+        color: #fff;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-checkout:hover {
+            background: #c00020;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-continue {
+        background: #fff;
+        color: #333;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+    }
+
+        .btn-continue:hover {
+            background: #f9f9f9;
+            color: #000;
+        }
+</style>
+
+<div class="cart-container">
+    <h2 class="cart-title"><i class="fa-solid fa-basket-shopping"></i> Giỏ hàng của bạn</h2>
+
+    @if (Model == null || !Model.Any() || gioHang == null)
+    {
+        <div style="text-align:center; padding: 60px;">
+            <i class="fa-solid fa-cart-arrow-down" style="font-size:60px; color:#ddd; margin-bottom:20px;"></i>
+            <h3>Giỏ hàng đang trống</h3>
+            <a href="@Url.Action("DanhSachMon_65133696", "KhachHang_65133696")" class="btn-checkout" style="margin-top:20px; display:inline-block;">Bắt đầu đặt hàng</a>
+        </div>
+    }
+    else
+    {
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Tên món</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th style="text-align:center;">Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    int sl = gioHang.ContainsKey(item.MaMon) ? gioHang[item.MaMon] : 0;
+                    string folder = item.Loai_Mon != null ? LayThuMucAnh(item.Loai_Mon.TenLoai) : "MonMoi";
+                    string imgName = string.IsNullOrEmpty(item.HinhAnh) ? folder + item.MaMon + ".jpg" : item.HinhAnh;
+                    string src = "~/Content/imagesKFC_65133696/" + folder + "/" + imgName;
+
+                    <tr>
+                        <td><img src="@Url.Content(src)" class="cart-item-img" onerror="this.src='https://via.placeholder.com/80'" /></td>
+                        <td><b>@item.TenMon</b><br><small>Mã: @item.MaMon</small></td>
+                        <td>@String.Format("{0:0,0}", item.Gia) đ</td>
+                        <td>
+                            <div style="display:flex; gap:5px; align-items:center;">
+                                <a href="@Url.Action("ThayDoiSoLuong_65133696", new { id = item.MaMon, hanhDong = "giam" })" class="btn-qty">-</a>
+                                <span style="width:30px; text-align:center; font-weight:bold;">@sl</span>
+                                <a href="@Url.Action("ThayDoiSoLuong_65133696", new { id = item.MaMon, hanhDong = "tang" })" class="btn-qty">+</a>
+                            </div>
+                        </td>
+                        <td style="color:#E4002B; font-weight:bold;">@String.Format("{0:0,0}", item.Gia * sl) đ</td>
+                        <td style="text-align:center;">
+                            <a href="@Url.Action("ThayDoiSoLuong_65133696", new { id = item.MaMon, hanhDong = "xoa" })" class="text-danger" onclick="return confirm('Xóa món này?')"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div style="margin-top:30px; text-align:right;">
+            @if (myVouchers != null && myVouchers.Any())
+            {
+                <form action="@Url.Action("GioHang_65133696", "KhachHang_65133696")" method="get" style="margin-bottom:20px;">
+                    <label style="font-weight:bold; margin-right:10px;"><i class="fa-solid fa-ticket"></i> Chọn Voucher:</label>
+                    <select name="voucherId" onchange="this.form.submit()" style="padding:8px 15px; border-radius:20px; border:1px solid #E4002B; color:#E4002B; outline:none;">
+                        <option value="">-- Không sử dụng --</option>
+                        @foreach (var v in myVouchers)
+                        {
+                            string sel = (ViewBag.VoucherIdDangChon != null && (int)ViewBag.VoucherIdDangChon == v.MaKM) ? "selected" : "";
+                            <option value="@v.MaKM" @sel>@v.TenKM (-@v.PhanTramGiam%)</option>
+                        }
+                    </select>
+                </form>
+                if (!string.IsNullOrEmpty(ViewBag.ThongBaoVoucher))
+                { <div style="color:green; font-weight:bold; margin-bottom:10px;">@ViewBag.ThongBaoVoucher</div>}
+        }
+
+            <div style="font-size:16px;">Tạm tính: <b>@String.Format("{0:0,0}", tongTienHang) đ</b></div>
+            <div style="font-size:16px; color:green;">Giảm giá: <b>-@String.Format("{0:0,0}", giamGia) đ</b></div>
+            <div style="font-size:24px; color:#E4002B; font-weight:900; margin:15px 0;">Thành tiền: @String.Format("{0:0,0}", thanhTien) đ</div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <a href="@Url.Action("XoaTatCaGioHang_65133696", "KhachHang_65133696")" class="btn-continue" style="color:red; border-color:red;" onclick="return confirm('Xóa sạch giỏ hàng?')">Xóa tất cả</a>
+
+                <div style="display:flex; gap:10px;">
+                    <a href="@Url.Action("DanhSachMon_65133696", "KhachHang_65133696")" class="btn-continue">Chọn thêm món</a>
+
+                    <button type="button" class="btn-checkout" id="btnDatHang" data-toggle="modal" data-target="#modalDatHang">
+                        Tiến hành đặt hàng <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (user != null)
+{
+    <div class="modal fade" id="modalDatHang" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background:#E4002B; color:white;">
+                    <h5 class="modal-title fw-bold" id="modalLabel">XÁC NHẬN ĐƠN HÀNG</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white; opacity:1;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="@Url.Action("DatHang_65133696", "KhachHang_65133696")" method="post">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Người nhận:</label>
+                            <input type="text" name="hoTenNguoiNhan" class="form-control" value="@user.HoTen" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Số điện thoại:</label>
+                            <input type="text" name="soDienThoai" class="form-control" value="@user.SoDT" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Địa chỉ giao hàng:</label>
+                            <textarea name="diaChiGiao" class="form-control" rows="3" required>@user.DiaChi</textarea>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Ghi chú:</label>
+                            <input type="text" name="ghiChu" class="form-control" placeholder="Ví dụ: Ít cay...">
+                        </div>
+                        <div class="alert alert-warning text-center">
+                            <strong>Tổng thanh toán: @String.Format("{0:0,0}", thanhTien) đ</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-danger" style="background:#E4002B;">XÁC NHẬN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Biến kiểm tra đăng nhập
+        var isLoggedIn = @(user != null ? "true" : "false");
+
+        // Bắt sự kiện click nút Đặt Hàng
+        $("#btnDatHang").click(function (e) {
+            e.preventDefault(); // Chặn hành động mặc định
+
+            if (isLoggedIn) {
+                // Nếu đã đăng nhập -> Mở Modal thủ công bằng jQuery
+                $("#modalDatHang").modal('show');
+            } else {
+                // Nếu chưa -> Hỏi đăng nhập
+                if (confirm("Bạn cần đăng nhập để đặt hàng. Chuyển đến trang đăng nhập ngay?")) {
+                    window.location.href = "@Url.Action("DangNhap_65133696", "KhachHang_65133696")";
+                }
+            }
+        });
+    });
+</script>

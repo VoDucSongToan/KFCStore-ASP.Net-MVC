@@ -1,0 +1,216 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Don_Hang>
+
+@{
+    ViewBag.Title = "Quản Lý Đơn Hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<style>
+     
+    .table-container {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        padding: 20px;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 13px;
+        padding: 15px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+        padding: 12px 15px;
+        color: #333;
+        font-size: 14px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+
+     
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        min-width: 100px;
+        text-align: center;
+    }
+
+    .st-wait {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .st-ship {
+        background: #cce5ff;
+        color: #004085;
+    }
+
+    .st-done {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .st-cancel {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+     
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);  
+        gap: 5px;
+        width: 120px;  
+        margin: 0 auto;
+    }
+
+     
+    .action-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        border: none;
+        color: white;
+        text-decoration: none;
+        margin: 0 auto;  
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            color: white;
+            opacity: 0.9;
+        }
+
+     
+    .btn-view {
+        background-color: #17a2b8;
+    }
+     
+    .btn-check {
+        background-color: #28a745;
+    }
+     
+    .btn-done {
+        background-color: #ffc107;
+        color: #333;
+    }
+     
+    .btn-cancel {
+        background-color: #dc3545;
+    }
+     
+
+     
+    .row-disabled {
+        opacity: 0.7;
+        background-color: #fafafa;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3">QUẢN LÝ ĐƠN HÀNG</h3>
+        <span class="text-muted">Tổng số: <strong>@Model.Count</strong> đơn hàng</span>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Mã ĐH</th>
+                    <th>Ngày đặt</th>
+                    <th>Khách hàng</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th class="text-center" style="width: 160px;">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string rowClass = (item.TrangThai == "HoanThanh" || item.TrangThai == "Huy") ? "row-disabled" : "";
+
+                    <tr class="@rowClass">
+                        <td><strong>#@item.MaDH</strong></td>
+                        <td>@string.Format("{0:dd/MM/yyyy HH:mm}", item.NgayDat)</td>
+                        <td>
+                            @{ string tenKhach = item.Tai_Khoan != null ? item.Tai_Khoan.HoTen : "Khách vãng lai"; }
+                            <span class="fw-bold text-dark">@tenKhach</span>
+                        </td>
+                        <td class="text-danger fw-bold">@string.Format("{0:N0} đ", item.TongTien)</td>
+                        <td>
+                            @if (item.TrangThai == "ChoXacNhan")
+                            {<span class="badge-status st-wait">Chờ xác nhận</span> }
+                            else if (item.TrangThai == "DangGiao")
+                            { <span class="badge-status st-ship">Đang giao</span> }
+                            else if (item.TrangThai == "HoanThanh")
+                            { <span class="badge-status st-done">Hoàn thành</span> }
+                            else
+                            { <span class="badge-status st-cancel">Đã hủy</span>}
+                        </td>
+
+                        <td class="text-center">
+                            <div class="action-grid">
+
+                                <div>
+                                    <a href="@Url.Action("ChiTietDonHangAdmin_65133696", "QuanLy_65133696", new { id = item.MaDH })"
+                                       class="action-btn btn-view" data-bs-toggle="tooltip" title="Xem chi tiết">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+
+                                <div>
+                                    @if (item.TrangThai == "ChoXacNhan")
+                                    {
+                                        <a href="@Url.Action("DuyetDon_65133696", "QuanLy_65133696", new { id = item.MaDH })"
+                                           class="action-btn btn-check" data-bs-toggle="tooltip" title="Duyệt đơn"
+                                           onclick="return confirm('Xác nhận duyệt đơn hàng này?');">
+                                            <i class="fa-solid fa-check"></i>
+                                        </a>
+                                    }
+                                    else if (item.TrangThai == "DangGiao")
+                                    {
+                                        <a href="@Url.Action("HoanThanhDon_65133696", "QuanLy_65133696", new { id = item.MaDH })"
+                                           class="action-btn btn-done" data-bs-toggle="tooltip" title="Xác nhận giao thành công"
+                                           onclick="return confirm('Khách đã nhận được hàng?');">
+                                            <i class="fa-solid fa-box-open"></i>
+                                        </a>
+                                    }
+                                </div>
+
+                                <div>
+                                    @if (item.TrangThai == "ChoXacNhan")
+                                    {
+                                        <a href="@Url.Action("HuyDon_65133696", "QuanLy_65133696", new { id = item.MaDH })"
+                                           class="action-btn btn-cancel" data-bs-toggle="tooltip" title="Hủy đơn"
+                                           onclick="return confirm('Bạn có chắc muốn hủy đơn này?');">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    }
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

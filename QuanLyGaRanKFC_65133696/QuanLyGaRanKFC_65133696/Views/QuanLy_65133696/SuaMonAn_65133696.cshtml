@@ -1,0 +1,82 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model Mon_An
+
+@{
+    ViewBag.Title = "Cập Nhật Món Ăn";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow border-0" style="max-width: 900px; margin: 0 auto;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0 fw-bold">CẬP NHẬT: @Model.TenMon</h5>
+        </div>
+        <div class="card-body p-4">
+
+            @using (Html.BeginForm("SuaMonAn_65133696", "QuanLy_65133696", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(m => m.MaMon)
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="mb-3">
+                            <label class="fw-bold">Tên món ăn:</label>
+                            @Html.TextBoxFor(m => m.TenMon, new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold">Giá bán (VNĐ):</label>
+                                @Html.TextBoxFor(m => m.Gia, "{0:0}", new { @class = "form-control", type = "number" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold">Danh mục:</label>
+                                @Html.DropDownList("MaLoai", null, new { @class = "form-select" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold">Trạng thái:</label>
+                            <div class="form-check form-switch">
+                                @Html.CheckBox("TrangThai", Model.TrangThai.GetValueOrDefault(), new { @class = "form-check-input", id = "chkStatus" })
+                                <label class="form-check-label" for="chkStatus">Đang kinh doanh (Bỏ tích để ẩn món)</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold">Mô tả:</label>
+                            @Html.TextAreaFor(m => m.MoTa, new { @class = "form-control", rows = "4" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 text-center">
+                        <label class="fw-bold mb-2">Hình ảnh hiện tại:</label>
+                        <div style="border: 2px dashed #ccc; padding: 10px; border-radius: 10px; margin-bottom: 10px; background: #f9f9f9;">
+                            <img id="previewImg" src="@Url.Content(Model.HinhAnh)"
+                                 style="max-width: 100%; height: 200px; object-fit: contain;" />
+                        </div>
+                        <label class="small text-muted mb-1">Chọn ảnh mới nếu muốn thay đổi:</label>
+                        <input type="file" name="fileAnh" class="form-control" onchange="previewImage(this)" />
+                    </div>
+                </div>
+
+                <div class="text-center mt-4 border-top pt-3">
+                    <a href="@Url.Action("QuanLyMonAn_65133696", "QuanLy_65133696")" class="btn btn-secondary me-2">Hủy</a>
+                    <button type="submit" class="btn btn-primary px-4">CẬP NHẬT</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('previewImg').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

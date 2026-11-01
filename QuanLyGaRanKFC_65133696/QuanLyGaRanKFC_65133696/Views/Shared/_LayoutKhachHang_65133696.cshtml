@@ -1,0 +1,284 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using QuanLyGaRanKFC_65133696.Models 
+
+@{
+
+    var userSession = Session["NguoiDung_65133696"] as Tai_Khoan;
+    var gioHang_65133696 = Session["GioHang_65133696"] as Dictionary<int, int>;
+    int soLuong_65133696 = gioHang_65133696 != null ? gioHang_65133696.Values.Sum() : 0;
+
+    ViewBag.Title = ViewBag.Title ?? "KFC Vietnam";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    @Styles.Render("~/Content/css")
+
+    <style>
+         
+        :root {
+            --kfc-red_65133696: #E4002B;
+            --bg-body_65133696: #f4f6f9;
+            --bg-white_65133696: #ffffff;
+            --text-main_65133696: #333333;
+            --text-gray_65133696: #666666;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-body_65133696);
+            color: var(--text-main_65133696);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            transition: 0.3s;
+            color: inherit;
+        }
+
+            a:hover {
+                text-decoration: none;
+                color: var(--kfc-red_65133696);
+            }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            background: var(--bg-white_65133696);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--kfc-red_65133696);
+        }
+
+        .navbar-container_65133696 {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-img_65133696 {
+            height: 60px;
+        }
+
+        .nav-menu_65133696 {
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-link_65133696 {
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            color: #222;
+            position: relative;
+            padding: 5px 0;
+        }
+
+            .nav-link_65133696:hover {
+                color: var(--kfc-red_65133696);
+            }
+
+                .nav-link_65133696:hover::after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 3px;
+                    bottom: -5px;
+                    left: 0;
+                    background: var(--kfc-red_65133696);
+                }
+
+        .user-actions_65133696 {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cart-btn_65133696 {
+            position: relative;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .cart-badge_65133696 {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--kfc-red_65133696);
+            color: white;
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            font-weight: bold;
+        }
+
+        #content_65133696 {
+            width: 100%;
+            flex: 1;
+        }
+
+        #footer_65133696 {
+            background-color: #111;
+            color: #fff !important;
+            padding: 60px 0 20px 0;
+            margin-top: 50px;
+            border-top: 4px solid var(--kfc-red_65133696);
+        }
+
+        .footer-content_65133696 {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-col_65133696 h3 {
+            color: var(--kfc-red_65133696) !important;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .footer-col_65133696 ul li {
+            margin-bottom: 10px;
+        }
+
+            .footer-col_65133696 ul li a {
+                color: #ccc !important;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+                .footer-col_65133696 ul li a:hover {
+                    color: #fff !important;
+                    padding-left: 5px;
+                }
+
+        .copyright_65133696 {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            color: #666 !important;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar-container_65133696">
+            <a href="@Url.Action("TrangChu_65133696", "KhachHang_65133696")">
+                <img src="~/Content/imagesKFC_65133696/logoKFC.jpg" alt="KFC Logo" class="logo-img_65133696" />
+            </a>
+
+            <nav class="nav-menu_65133696">
+                <a href="@Url.Action("DanhSachMon_65133696", "KhachHang_65133696")" class="nav-link_65133696">Thực Đơn</a>
+                <a href="@Url.Action("KhuyenMai_65133696", "KhachHang_65133696")" class="nav-link_65133696">Khuyến Mãi</a>
+                <a href="@Url.Action("LienHe_65133696", "KhachHang_65133696")" class="nav-link_65133696">Liên Hệ</a>
+                <a href="@Url.Action("HeThongNhaHang_65133696", "KhachHang_65133696")" class="nav-link_65133696">Hệ thống nhà hàng</a>
+            </nav>
+
+            <div class="user-actions_65133696">
+                <a href="@Url.Action("GioHang_65133696", "KhachHang_65133696")" class="cart-btn_65133696">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    @if (soLuong_65133696 > 0)
+                    {
+                        <span class="cart-badge_65133696">@soLuong_65133696</span>
+                    }
+                </a>
+
+                @if (userSession == null)
+                {
+                    <a href="@Url.Action("DangNhap_65133696", "KhachHang_65133696")" style="font-size:14px;">
+                        <i class="fa-regular fa-user"></i> Đăng nhập
+                    </a>
+                }
+                else
+                {
+                    <div style="font-size:14px; display:inline-flex; align-items:center;">
+                        <a href="@Url.Action("ThongTinCaNhan_65133696", "KhachHang_65133696")"
+                           style="color:var(--kfc-red_65133696); font-weight:bold; text-decoration:none;">
+                            Chào, @userSession.HoTen
+                        </a>
+
+                        <span style="margin:0 5px; color:#ccc;">|</span>
+
+                        <a href="@Url.Action("DangXuat_65133696", "KhachHang_65133696")" style="color:#555;" title="Đăng xuất">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <div id="content_65133696">
+        @RenderBody()
+    </div>
+    <div id="footer_65133696">
+        <div class="footer-content_65133696">
+            <div class="footer-col_65133696">
+                <h3>Về KFC</h3>
+                <ul>
+                    <li><a href="#">Câu chuyện thương hiệu</a></li>
+                    <li><a href="#">Tin tức & Sự kiện</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                </ul>
+            </div>
+            <div class="footer-col_65133696">
+                <h3>Chính Sách</h3>
+                <ul>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                    <li><a href="#">Chính sách giao hàng</a></li>
+                </ul>
+            </div>
+            <div class="footer-col_65133696">
+                <h3>Liên Hệ KFC</h3>
+                <ul>
+                    <li style="font-size: 24px; font-weight:bold; color:white; margin-bottom:10px;">1900 6886</li>
+                    <li style="color:#ccc"><i class="fa-solid fa-envelope"></i> lienhe@kfcvietnam.com.vn</li>
+                    <li style="margin-top:20px;">
+                        <a href="#"><i class="fa-brands fa-facebook fa-2x" style="margin-right:15px;"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube fa-2x"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram fa-2x" style="margin-left:15px;"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright_65133696">
+            Copyright &copy; @DateTime.Now.Year KFC Project - MSSV: 65133696.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model LienHe
+
+@{
+    ViewBag.Title = "Liên Hệ KFC";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+}
+
+<style>
+     
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+     
+    .contact-header {
+        text-align: center;
+        margin: 50px 0 40px;
+    }
+
+        .contact-header h2 {
+            color: #E4002B;
+            font-weight: 900;
+            font-size: 36px;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+    .contact-line {
+        width: 60px;
+        height: 5px;
+        background: #333;
+        margin: 10px auto 15px;
+        border-radius: 2px;
+    }
+
+    .contact-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+     
+    .contact-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;  
+        max-width: 1300px;  
+        margin: 0 auto 60px;
+        padding: 0 20px;
+    }
+
+     
+    .info-col {
+        flex: 1;  
+        min-width: 350px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 25px;
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        background: #E4002B;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-right: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(228, 0, 43, 0.3);
+    }
+
+    .info-content h4 {
+        margin: 0 0 5px;
+        font-weight: 800;
+        font-size: 16px;
+        color: #222;
+        text-transform: uppercase;
+    }
+
+    .info-content p {
+        margin: 0;
+        color: #555;
+        line-height: 1.5;
+        font-size: 15px;
+    }
+
+    .info-content a {
+        color: #555;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .map-frame {
+        border-radius: 15px;
+        overflow: hidden;
+        height: 350px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+    }
+
+     
+    .form-col {
+        flex: 1.8;  
+        min-width: 400px;
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        height: fit-content;
+    }
+
+    .form-title {
+        font-size: 24px;
+        font-weight: 900;
+        color: #E4002B;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        border-bottom: 2px solid #f5f5f5;
+        padding-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+     
+
+    .form-label {
+        display: block;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+     
+    .form-control {
+        width: 100%;  
+        max-width: 100%;  
+        padding: 14px 20px;  
+        border-radius: 10px;  
+        border: 1px solid #ddd;
+        outline: none;
+        font-size: 15px;
+        transition: 0.3s;
+        background: #fdfdfd;
+        box-sizing: border-box;  
+    }
+
+        .form-control:focus {
+            border-color: #E4002B;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(228, 0, 43, 0.1);  
+        }
+
+    textarea.form-control {
+        min-height: 150px;  
+        resize: vertical;  
+    }
+
+    .btn-send {
+        background: #E4002B;
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 16px;
+        border-radius: 50px;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(228, 0, 43, 0.2);
+    }
+
+        .btn-send:hover {
+            background: #c00020;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(228, 0, 43, 0.4);
+        }
+
+     
+    .alert-msg {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-ok {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-err {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<div class="contact-header">
+    <h2>Liên Hệ Với Chúng Tôi</h2>
+    <div class="contact-line"></div>
+    <p>Luôn lắng nghe và phục vụ bạn 24/7</p>
+</div>
+
+<div class="contact-box">
+
+    <div class="info-col">
+        <div class="info-card">
+            <div class="info-row">
+                <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-content">
+                    <h4>Địa chỉ trụ sở</h4>
+                    <p>67 Lê Thành Phương, P. Phương Sài,<br>TP. Nha Trang, Khánh Hòa.</p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="icon-box"><i class="fa-solid fa-phone-volume"></i></div>
+                <div class="info-content">
+                    <h4>Hotline (24/7)</h4>
+                    <p><a href="tel:19006886">1900 6886</a></p>
+                    <p><a href="tel:02583811111">0258 3811 111</a></p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                <div class="info-content">
+                    <h4>Email hỗ trợ</h4>
+                    <p><a href="mailto:lienhe@kfcvietnam.com">lienhe@kfcvietnam.com</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-frame">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.676239563226!2d109.1866753148101!3d12.253676991330362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3170677c703b070d%3A0x6739670733df66!2sKFC%20L%C3%AA%20Th%C3%A0nh%20Ph%C6%B0%C6%A1ng!5e0!3m2!1svi!2s!4v1677812345678!5m2!1svi!2s"
+                    style="width: 100%; height: 100%; border: 0;"
+                    allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <div class="form-col">
+        <h3 class="form-title"><i class="fa-solid fa-pen-to-square"></i> Gửi Phản Hồi</h3>
+
+        @if (TempData["ThongBao"] != null)
+        {
+            <div class="alert-msg alert-ok"><i class="fa-solid fa-check-circle"></i> @TempData["ThongBao"]</div>
+        }
+        @if (TempData["Loi"] != null)
+        {
+            <div class="alert-msg alert-err"><i class="fa-solid fa-circle-exclamation"></i> @TempData["Loi"]</div>
+        }
+
+        @using (Html.BeginForm("LienHe_65133696", "KhachHang_65133696", FormMethod.Post))
+        {
+            <input type="hidden" name="MaTK" value="@Model.MaTK" />
+
+            <div class="form-group">
+                <label class="form-label">Họ và tên (*)</label>
+                <input type="text" name="HoTen" class="form-control" value="@Model.HoTen" placeholder="Nhập họ tên đầy đủ..." required />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email liên hệ (*)</label>
+                <input type="email" name="Email" class="form-control" value="@Model.Email" placeholder="Nhập địa chỉ email..." required />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="text" name="SoDienThoai" class="form-control" value="@Model.SoDienThoai" placeholder="Nhập số điện thoại..." />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tiêu đề</label>
+                <input type="text" name="TieuDe" class="form-control" placeholder="Bạn cần hỗ trợ vấn đề gì?" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nội dung tin nhắn (*)</label>
+                <textarea name="NoiDung" class="form-control" placeholder="Viết nội dung chi tiết tại đây..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-send">
+                Gửi Phản Hồi <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        }
+    </div>
+
+</div>

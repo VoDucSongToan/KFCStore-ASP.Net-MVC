@@ -1,0 +1,79 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Mon_An>
+
+@{
+    ViewBag.Title = "Quản Lý Món Ăn";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3">THỰC ĐƠN MÓN ĂN</h3>
+        <a href="@Url.Action("ThemMonAn_65133696", "QuanLy_65133696")" class="btn btn-danger">
+            <i class="fa-solid fa-plus"></i> Thêm món mới
+        </a>
+    </div>
+
+    @if (TempData["ThongBao"] != null)
+    {<div class="alert alert-success mb-3">@TempData["ThongBao"]</div>}
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Món ăn</th>
+                        <th>Danh mục</th>
+                        <th>Giá bán</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="@Url.Content(item.HinhAnh)"
+                                         style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #eee;"
+                                         onerror="this.src='https://via.placeholder.com/60'" />
+                                    <div class="ms-3">
+                                        <div class="fw-bold text-dark">@item.TenMon</div>
+                                        <small class="text-muted">ID: @item.MaMon</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">@item.Loai_Mon.TenLoai</span></td>
+                            <td class="text-danger fw-bold">@string.Format("{0:N0} đ", item.Gia)</td>
+                            <td>
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="badge bg-success">Đang bán</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Ngừng bán</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("SuaMonAn_65133696", "QuanLy_65133696", new { id = item.MaMon })"
+                                   class="btn btn-sm btn-primary me-1" title="Chỉnh sửa">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                @if (item.TrangThai == true)
+                                {
+                                    <a href="@Url.Action("XoaMonAn_65133696", "QuanLy_65133696", new { id = item.MaMon })"
+                                       class="btn btn-sm btn-outline-danger" title="Ngừng kinh doanh"
+                                       onclick="return confirm('Tạm ẩn món này khỏi thực đơn?');">
+                                        <i class="fa-solid fa-eye-slash"></i>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

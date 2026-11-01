@@ -1,0 +1,354 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model IEnumerable<Mon_An>
+
+@{
+    ViewBag.Title = "Khuyến Mãi KFC";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+
+    var listVoucher = ViewBag.DanhSachVoucher as List<Khuyen_Mai>;
+    var maDaLuu = ViewBag.MaDaLuu as List<int>;
+}
+
+@functions {
+    public string LayThuMucAnh(string tenLoai)
+    {
+        if (string.IsNullOrEmpty(tenLoai)) return "MonMoi";
+        tenLoai = tenLoai.ToLower();
+        if (tenLoai.Contains("combo")) return "Combo";
+        if (tenLoai.Contains("ưu đãi")) return "UuDai";
+        return "MonMoi";
+    }
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+     
+    .promo-header {
+        text-align: center;
+        margin: 40px 0 30px;
+    }
+
+        .promo-header h2 {
+            font-weight: 900;
+            color: #E4002B;
+            text-transform: uppercase;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .promo-header p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+     
+    .voucher-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        max-width: 1200px;
+        margin: 0 auto 60px;
+        padding: 0 20px;
+    }
+
+    .ticket-card {
+        background: #fff;
+        border-radius: 12px;
+        display: flex;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .ticket-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(228, 0, 43, 0.1);
+        }
+
+    .ticket-left {
+        background: linear-gradient(135deg, #E4002B, #c00020);
+        color: white;
+        width: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 2px dashed rgba(255,255,255,0.6);
+        position: relative;
+    }
+         
+        .ticket-left::before, .ticket-left::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #f8f9fa;
+            border-radius: 50%;
+        }
+
+        .ticket-left::before {
+            top: -10px;
+        }
+
+        .ticket-left::after {
+            bottom: -10px;
+        }
+
+    .percent {
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .txt-off {
+        font-size: 0.9rem;
+        font-weight: bold;
+        opacity: 0.9;
+        margin-top: 5px;
+    }
+
+    .ticket-right {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .v-code {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .v-desc {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+
+    .v-date {
+        font-size: 0.8rem;
+        color: #999;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-save-code {
+        padding: 6px 15px;
+        border-radius: 20px;
+        border: 1px solid #E4002B;
+        color: #E4002B;
+        background: transparent;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        align-self: flex-start;
+        transition: 0.3s;
+    }
+
+        .btn-save-code:hover {
+            background: #E4002B;
+            color: #fff;
+        }
+
+    .btn-saved {
+        background: #eee;
+        color: #888;
+        border-color: #eee;
+        cursor: default;
+    }
+
+     
+    .food-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto 60px;
+        padding: 0 20px;
+    }
+
+    .food-card-modern {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.04);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+
+        .food-card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            border-color: rgba(228, 0, 43, 0.2);
+        }
+
+    .img-container {
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+    }
+
+        .img-container img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            transition: 0.5s;
+        }
+
+    .food-card-modern:hover .img-container img {
+        transform: scale(1.1) rotate(2deg);
+    }
+
+    .card-content {
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .card-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #222;
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 50px;
+    }
+
+        .card-title:hover {
+            color: #E4002B;
+        }
+
+    .card-price {
+        font-size: 1.25rem;
+        color: #E4002B;
+        font-weight: 800;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .btn-block-order {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 15px;
+        background: #E4002B;
+        color: #fff;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-block-order:hover {
+            background: #b71c1c;
+            color: #fff;
+        }
+
+    .tag-hot {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #ffc107;
+        color: #000;
+        font-weight: 800;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 6px;
+        z-index: 2;
+    }
+</style>
+
+<div class="promo-header">
+    <h2>🔥 Săn Voucher Hot 🔥</h2>
+    <p>Số lượng có hạn - Lưu mã ngay để nhận ưu đãi</p>
+</div>
+
+<div class="voucher-grid">
+    @if (listVoucher != null && listVoucher.Any())
+    {
+        foreach (var v in listVoucher)
+        {
+            bool isSaved = maDaLuu != null && maDaLuu.Contains(v.MaKM);
+            <div class="ticket-card">
+                <div class="ticket-left">
+                    <span class="percent">@v.PhanTramGiam%</span>
+                    <span class="txt-off">OFF</span>
+                </div>
+                <div class="ticket-right">
+                    <div class="v-code">@v.TenKM</div>
+                    <div class="v-desc">@v.NoiDung</div>
+                    <div class="v-date"><i class="fa-regular fa-clock"></i> HSD: @(v.NgayKetThuc?.ToString("dd/MM/yyyy") ?? "Vô thời hạn")</div>
+
+                    @if (isSaved)
+                    {
+                        <button class="btn-save-code btn-saved"><i class="fa-solid fa-check"></i> Đã lưu</button>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("LuuVoucher_65133696", "KhachHang_65133696", new { maKM = v.MaKM })" class="btn-save-code">Lưu Mã</a>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    { <p class="text-center w-100 text-muted">Hiện chưa có voucher nào.</p>}
+</div>
+
+<div class="promo-header" style="border-top: 1px solid #eee; padding-top: 40px;">
+    <h2>🍔 Combo Ưu Đãi Độc Quyền 🍔</h2>
+</div>
+
+<div class="food-grid">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            string tenThuMuc = "MonMoi";
+            if (item.Loai_Mon != null) { tenThuMuc = LayThuMucAnh(item.Loai_Mon.TenLoai); }
+            string fullPath = item.HinhAnh != null && item.HinhAnh.Contains("~/Content")
+                              ? item.HinhAnh
+                              : "~/Content/imagesKFC_65133696/" + tenThuMuc + "/" + (item.HinhAnh ?? (tenThuMuc + item.MaMon + ".jpg"));
+
+            <div class="food-card-modern">
+                <div class="tag-hot">HOT DEAL</div>
+
+                <div class="img-container">
+                    <a href="@Url.Action("ChiTietMon_65133696", "KhachHang_65133696", new { id = item.MaMon })">
+                        <img src="@Url.Content(fullPath)" onerror="this.src='https://via.placeholder.com/300?text=KFC'" />
+                    </a>
+                </div>
+
+                <div class="card-content">
+                    <a href="@Url.Action("ChiTietMon_65133696", "KhachHang_65133696", new { id = item.MaMon })" class="card-title">
+                        @item.TenMon
+                    </a>
+                    <span class="card-price">@String.Format("{0:0,0}", item.Gia)đ</span>
+
+                    <a href="@Url.Action("ChiTietMon_65133696", "KhachHang_65133696", new { id = item.MaMon })" class="btn-block-order">
+                        ĐẶT NGAY
+                    </a>
+                </div>
+            </div>
+        }
+    }
+</div>

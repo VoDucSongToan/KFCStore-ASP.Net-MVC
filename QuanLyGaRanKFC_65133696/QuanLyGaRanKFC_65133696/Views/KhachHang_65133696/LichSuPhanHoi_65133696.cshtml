@@ -1,0 +1,174 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<LienHe>
+
+@{
+    ViewBag.Title = "Lịch Sử Phản Hồi";
+    Layout = "~/Views/Shared/_LayoutKhachHang_65133696.cshtml";
+}
+
+<style>
+    .history-container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .history-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .history-header h2 {
+            color: #E4002B;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 30px;
+        }
+
+    .msg-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+     
+    .msg-header {
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fdfdfd;
+    }
+
+    .msg-date {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .msg-status {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+     
+    .status-replied {
+        background: #d4edda;
+        color: #155724;
+    }
+     
+
+    .msg-body {
+        padding: 20px;
+    }
+
+    .msg-title {
+        font-weight: 800;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .msg-content {
+        color: #555;
+        line-height: 1.5;
+    }
+
+     
+    .admin-reply-box {
+        background: #f0f8ff;  
+        padding: 20px;
+        border-top: 2px solid #cce5ff;
+    }
+
+    .admin-name {
+        color: #E4002B;
+        font-weight: 800;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .reply-text {
+        color: #333;
+        font-style: italic;
+    }
+
+    .reply-time {
+        font-size: 12px;
+        color: #777;
+        margin-top: 10px;
+        text-align: right;
+    }
+</style>
+
+<div class="history-container">
+    <div class="history-header">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Hỗ Trợ</h2>
+        <p>Theo dõi các phản hồi của bạn và giải đáp từ KFC</p>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            // Kiểm tra xem Admin đã trả lời chưa (Dựa vào cột PhanHoi có dữ liệu không)
+            bool isReplied = !string.IsNullOrEmpty(item.PhanHoi);
+
+            <div class="msg-card">
+                <div class="msg-header">
+                    <span class="msg-date">
+                        <i class="fa-regular fa-calendar"></i> Gửi ngày: @(item.NgayGui.HasValue ? item.NgayGui.Value.ToString("dd/MM/yyyy HH:mm") : "")
+                    </span>
+
+                    @if (isReplied)
+                    {
+                        <span class="msg-status status-replied"><i class="fa-solid fa-check"></i> Đã trả lời</span>
+                    }
+                    else
+                    {
+                        <span class="msg-status status-pending"><i class="fa-regular fa-hourglass"></i> Đang chờ xử lý</span>
+                    }
+                </div>
+
+                <div class="msg-body">
+                    <div class="msg-title">Tiêu đề: @item.TieuDe</div>
+                    <div class="msg-content">@item.NoiDung</div>
+                </div>
+
+                @if (isReplied)
+                {
+                    <div class="admin-reply-box">
+                        <div class="admin-name">
+                            <i class="fa-solid fa-user-shield"></i> Ban Quản Trị KFC
+                        </div>
+                        <div class="reply-text">
+                            "@item.PhanHoi"
+                        </div>
+                        <div class="reply-time">
+                            Phản hồi lúc: @(item.NgayPhanHoi.HasValue ? item.NgayPhanHoi.Value.ToString("dd/MM/yyyy HH:mm") : "")
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div style="text-align:center; padding:50px; color:#999;">
+            <i class="fa-regular fa-paper-plane" style="font-size:50px; margin-bottom:15px;"></i>
+            <p>Bạn chưa gửi liên hệ nào.</p>
+            <a href="@Url.Action("LienHe_65133696","KhachHang_65133696")" style="color:#E4002B; font-weight:bold;">Gửi hỗ trợ ngay</a>
+        </div>
+    }
+</div>

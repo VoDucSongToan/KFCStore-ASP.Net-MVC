@@ -1,0 +1,158 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Khuyen_Mai>
+
+@{
+    ViewBag.Title = "Quản Lý Voucher";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<style>
+     
+    .coupon-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        display: flex;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s;
+        margin-bottom: 20px;
+        height: 140px;  
+    }
+
+        .coupon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+     
+    .coupon-left {
+        background: #E4002B;
+        color: white;
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border-right: 2px dashed #fff;  
+    }
+
+         
+        .coupon-left::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #f4f6f9;  
+            border-radius: 50%;
+        }
+
+        .coupon-left::before {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: #f4f6f9;
+            border-radius: 50%;
+        }
+
+    .discount-text {
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .off-text {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+     
+    .coupon-right {
+        padding: 15px;
+        width: 65%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .coupon-title {
+        font-weight: 800;
+        font-size: 16px;
+        color: #333;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .coupon-desc {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 5px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .coupon-date {
+        font-size: 11px;
+        color: #999;
+    }
+
+    .coupon-actions {
+        text-align: right;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3">DANH SÁCH VOUCHER</h3>
+        <a href="@Url.Action("ThemKhuyenMai_65133696", "QuanLy_65133696")" class="btn btn-danger">
+            <i class="fa-solid fa-plus"></i> Tạo Voucher Mới
+        </a>
+    </div>
+
+    @if (TempData["ThongBao"] != null)
+    {<div class="alert alert-success mb-3">@TempData["ThongBao"]</div>}
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="coupon-card">
+                    <div class="coupon-left">
+                        <div class="discount-text">@item.PhanTramGiam%</div>
+                        <div class="off-text">OFF</div>
+                    </div>
+
+                    <div class="coupon-right">
+                        <div>
+                            <div class="coupon-title">@item.TenKM</div>
+                            <div class="coupon-desc">@item.NoiDung</div> <div class="coupon-date">
+                                <i class="fa-regular fa-clock"></i> HSD: @string.Format("{0:dd/MM/yyyy}", item.NgayKetThuc)
+                            </div>
+                        </div>
+
+                        <div class="coupon-actions">
+                            <a href="@Url.Action("SuaKhuyenMai_65133696", "QuanLy_65133696", new { id = item.MaKM })"
+                               class="btn btn-sm btn-outline-primary border-0" title="Sửa">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <a href="@Url.Action("XoaKhuyenMai_65133696", "QuanLy_65133696", new { id = item.MaKM })"
+                               class="btn btn-sm btn-outline-danger border-0" title="Xóa"
+                               onclick="return confirm('Xóa voucher này?');">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="504eb2a1bc864c2098a57f4ba4186114" Name="Diagram1" ZoomLevel="129">
+        <EntityTypeShape EntityType="KFC_StoreModel.Chi_Nhanh" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Chi_Tiet_Don_Hang" Width="1.5" PointX="5.25" PointY="2.875" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Don_Hang" Width="1.5" PointX="3" PointY="2.5" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Giao_Hang" Width="1.5" PointX="5.25" PointY="6" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Khuyen_Mai" Width="1.5" PointX="5.25" PointY="11.625" />
+        <EntityTypeShape EntityType="KFC_StoreModel.LienHe" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Loai_Mon" Width="1.5" PointX="0.75" PointY="12" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Mon_An" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="KFC_StoreModel.Tai_Khoan" Width="1.5" PointX="0.75" PointY="4.5" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Chi_Tiet___MaMon__4D94879B" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Chi_Tiet_D__MaDH__4CA06362" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Don_Hang__MaTK__48CFD27E" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Giao_Hang__MaDH__5070F446" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Giao_Hang__MaTK__5165187F" />
+        <AssociationConnector Association="KFC_StoreModel.FK__LienHe__MaTK__5812160E" />
+        <AssociationConnector Association="KFC_StoreModel.FK__LienHe__NguoiPha__5AEE82B9" />
+        <AssociationConnector Association="KFC_StoreModel.FK__Mon_An__MaLoai__3D5E1FD2" />
+        <AssociationConnector Association="KFC_StoreModel.Mon_Khuyen_Mai" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

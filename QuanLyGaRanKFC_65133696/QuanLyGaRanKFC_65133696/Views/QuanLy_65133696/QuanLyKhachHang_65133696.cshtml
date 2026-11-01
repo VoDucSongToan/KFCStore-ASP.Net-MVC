@@ -1,0 +1,132 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model List<Tai_Khoan>
+
+@{
+    ViewBag.Title = "Quản Lý Khách Hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark border-start border-4 border-danger ps-3">DANH SÁCH TÀI KHOẢN</h3>
+        <a href="@Url.Action("ThemKhachHang_65133696", "QuanLy_65133696")" class="btn btn-danger shadow-sm">
+            <i class="fa-solid fa-user-plus"></i> Thêm Thành Viên
+        </a>
+    </div>
+
+    @if (TempData["ThongBao"] != null)
+    {
+        <div class="alert alert-success shadow-sm"><i class="fa-solid fa-check-circle"></i> @TempData["ThongBao"]</div>
+    }
+    @if (TempData["Loi"] != null)
+    {
+        <div class="alert alert-danger shadow-sm"><i class="fa-solid fa-triangle-exclamation"></i> @TempData["Loi"]</div>
+    }
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase small fw-bold text-secondary">
+                    <tr>
+                        <th class="ps-4">Họ tên & ID</th>
+                        <th>Liên hệ</th>
+                        <th>Địa chỉ</th>
+                        <th>Vai trò</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        // Kiểm tra Admin
+                        bool isAdmin = (item.VaiTro != null && item.VaiTro.Trim() == "QuanLy");
+
+                        // Tô màu nền
+                        string rowClass = isAdmin ? "table-warning" : "";
+                        string avatarColor = isAdmin ? "bg-danger" : "bg-secondary";
+
+                        <tr class="@rowClass">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle @avatarColor text-white d-flex justify-content-center align-items-center fw-bold shadow-sm"
+                                         style="width: 42px; height: 42px; font-size: 16px; margin-right: 15px;">
+                                        @item.HoTen.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">@item.HoTen</div>
+                                        <small class="text-muted">ID: #@item.MaTK</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div><i class="fa-solid fa-envelope text-muted me-2" style="width:16px"></i> @item.Email</div>
+                                <div class="mt-1"><i class="fa-solid fa-phone text-muted me-2" style="width:16px"></i> @item.SoDT</div>
+                            </td>
+                            <td>
+                                <span class="text-secondary small">
+                                    <i class="fa-solid fa-location-dot"></i> @(string.IsNullOrEmpty(item.DiaChi) ? "---" : item.DiaChi)
+                                </span>
+                            </td>
+                            <td>
+                                @if (isAdmin)
+                                {
+                                    <span class="badge bg-danger border border-danger p-2 shadow-sm">
+                                        <i class="fa-solid fa-user-shield"></i> QUẢN TRỊ VIÊN
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-dark border p-2">
+                                        <i class="fa-solid fa-user"></i> Khách hàng
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light border shadow-sm" type="button" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li>
+                                            <a class="dropdown-item py-2" href="@Url.Action("SuaKhachHang_65133696", "QuanLy_65133696", new { id = item.MaTK })">
+                                                <i class="fa-solid fa-pen text-primary me-2"></i> Chỉnh sửa
+                                            </a>
+                                        </li>
+
+                                        @if (!isAdmin)
+                                        {
+                                            <li>
+                                                <a class="dropdown-item py-2" href="@Url.Action("CapQuyenAdmin_65133696", "QuanLy_65133696", new { id = item.MaTK })"
+                                                   onclick="return confirm('XÁC NHẬN: Thăng chức tài khoản này lên làm QUẢN TRỊ VIÊN?');">
+                                                    <i class="fa-solid fa-arrow-up text-success me-2"></i> Thăng chức Admin
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a class="dropdown-item py-2" href="@Url.Action("HuyQuyenAdmin_65133696", "QuanLy_65133696", new { id = item.MaTK })"
+                                                   onclick="return confirm('CẢNH BÁO: Bạn muốn hủy quyền Admin của người này xuống làm Khách hàng?');">
+                                                    <i class="fa-solid fa-arrow-down text-warning me-2"></i> Hủy quyền Admin
+                                                </a>
+                                            </li>
+                                        }
+
+                                        <li><hr class="dropdown-divider"></li>
+
+                                        <li>
+                                            <a class="dropdown-item py-2 text-danger" href="@Url.Action("XoaKhachHang_65133696", "QuanLy_65133696", new { id = item.MaTK })"
+                                               onclick="return confirm('Bạn có chắc muốn xóa tài khoản này không?');">
+                                                <i class="fa-solid fa-trash me-2"></i> Xóa tài khoản
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

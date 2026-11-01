@@ -1,0 +1,53 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model Khuyen_Mai
+
+@{
+    ViewBag.Title = "Sửa Voucher";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow border-0" style="max-width: 600px; margin: 0 auto;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0 fw-bold">CẬP NHẬT VOUCHER</h5>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(m => m.MaKM)
+
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label class="fw-bold">Tên Voucher:</label>
+                        @Html.TextBoxFor(m => m.TenKM, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="fw-bold">Giảm giá (%):</label>
+                        @Html.TextBoxFor(m => m.PhanTramGiam, new { @class = "form-control", type = "number", min = "1", max = "100" })
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Mô tả chi tiết:</label>
+                    @Html.TextBoxFor(m => m.NoiDung, new { @class = "form-control" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Ngày bắt đầu:</label>
+                        <input type="date" name="NgayBatDau" class="form-control" value="@Model.NgayBatDau.Value.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Hạn sử dụng:</label>
+                        <input type="date" name="NgayKetThuc" class="form-control" value="@Model.NgayKetThuc.Value.ToString("yyyy-MM-dd")" required />
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="@Url.Action("QuanLyKhuyenMai_65133696", "QuanLy_65133696")" class="btn btn-secondary me-2">Quay lại</a>
+                    <button type="submit" class="btn btn-primary px-4">LƯU THAY ĐỔI</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

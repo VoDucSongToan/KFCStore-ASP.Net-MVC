@@ -1,0 +1,51 @@
+﻿@using QuanLyGaRanKFC_65133696.Models
+@model Khuyen_Mai
+
+@{
+    ViewBag.Title = "Tạo Voucher Mới";
+    Layout = "~/Views/Shared/_LayoutAdmin_65133696.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow border-0" style="max-width: 600px; margin: 0 auto;">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0 fw-bold">TẠO VOUCHER MỚI</h5>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm())
+            {
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label class="fw-bold">Tên Voucher (Ví dụ: MUA 1 TẶNG 1):</label>
+                        <input type="text" name="TenKM" class="form-control" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="fw-bold">Giảm giá (%):</label>
+                        <input type="number" name="PhanTramGiam" class="form-control" required min="1" max="100" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Mô tả chi tiết (Ví dụ: Áp dụng cho gà rán...):</label>
+                    <input type="text" name="NoiDung" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Ngày bắt đầu:</label>
+                        <input type="date" name="NgayBatDau" class="form-control" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">Hạn sử dụng (Ngày kết thúc):</label>
+                        <input type="date" name="NgayKetThuc" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="@Url.Action("QuanLyKhuyenMai_65133696", "QuanLy_65133696")" class="btn btn-secondary me-2">Quay lại</a>
+                    <button type="submit" class="btn btn-danger px-4">LƯU VOUCHER</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
